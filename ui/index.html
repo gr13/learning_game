@@ -7,6 +7,38 @@
         <link rel="stylesheet" href="static/style.css">
     </head>
     <body>
-        
+        <h1>Hello Words</h1>
+
+        <button onclick="loadHello()">Load From Backend</button>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+
+        <script>
+        function loadHello() {
+            fetch('/helloworld')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('table-body');
+                    tableBody.innerHTML = '';
+
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.textContent = data.message;
+                    row.appendChild(cell);
+                    tableBody.appendChild(row);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        </script>
     </body>
 </html>

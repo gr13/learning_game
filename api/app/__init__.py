@@ -2,7 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from app.resources.helloworld import HelloWorld
-from app.resources.image_utility import ImageUtility
 
 
 app = Flask(__name__)
@@ -16,4 +15,3 @@ api = Api(app)
 
 
 api.add_resource(HelloWorld, "/")
-api.add_resource(ImageUtility, "/getparamsfromphoto")
