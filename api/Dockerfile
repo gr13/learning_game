@@ -2,4 +2,4 @@ FROM python:latest
 WORKDIR /app
 ADD . /app
 RUN pip install -r requirements.txt
-CMD [ "uwsgi", "app.ini" ]
+CMD [ "uwsgi", "--ini", "app.ini" ]

@@ -2,43 +2,24 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport", content="width=device-width, initial-scale=1.0">
-        <title>Maze</title>
+        <title>Language Learning App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="static/style.css">
     </head>
     <body>
-        <h1>Hello Words</h1>
+        <h1>Language Learning App</h1>
+        <div class="modules">
+            <button onclick="requestModule(1)">1 - Core Vocabulary</button>
+            <button onclick="requestModule(2)">2 - Domain Vocabulary</button>
+            <button onclick="requestModule(3)">3 - Reading Exam</button>
+            <button onclick="requestModule(4)">4 - Writing Exam</button>
+            <button onclick="requestModule(5)">5 - Speaking Exam</button>
+            <button onclick="requestModule(6)">6 - Exam</button>
+        </div>
 
-        <button onclick="loadHello()">Load From Backend</button>
+        <div id="message"></div>
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-            </tbody>
-        </table>
-
-        <script>
-        function loadHello() {
-            fetch('/helloworld')
-                .then(response => response.json())
-                .then(data => {
-                    const tableBody = document.getElementById('table-body');
-                    tableBody.innerHTML = '';
-
-                    const row = document.createElement('tr');
-                    const cell = document.createElement('td');
-                    cell.textContent = data.message;
-                    row.appendChild(cell);
-                    tableBody.appendChild(row);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-        </script>
+        <!-- External JS -->
+        <script src="static/js/main.js"></script>
     </body>
 </html>

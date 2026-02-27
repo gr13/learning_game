@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from app.resources.helloworld import HelloWorld
+from app.resources.module import Module
 
 
 app = Flask(__name__)
@@ -15,3 +16,4 @@ api = Api(app)
 
 
 api.add_resource(HelloWorld, "/")
+api.add_resource(Module, "/modules/<int:module_id>")

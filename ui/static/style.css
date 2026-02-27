@@ -1,53 +1,122 @@
+/* ============================================================
+   Language Learning App - Main Stylesheet
+   ------------------------------------------------------------
+   This stylesheet controls layout, responsiveness, and button
+   styling for both mobile and desktop environments.
+   ============================================================ */
+
+
+/* ============================================================
+   GLOBAL PAGE STYLES
+   ------------------------------------------------------------
+   These styles affect the entire page layout.
+   ============================================================ */
+
+/* Remove default browser margins and apply consistent spacing */
 body {
-    background-color: black;
-    color: white;
-
-    margin: 0;
-}
-#settings {
-    background-color: rgb(58, 58, 58);
-    padding: 10px;
+    font-family: Arial, sans-serif;   /* Simple, readable font */
+    margin: 0;                        /* Remove default margin */
+    padding: 20px;                    /* Add inner spacing */
+    background-color: #f4f4f4;        /* Light gray background */
+    text-align: center;               /* Center all inline content */
 }
 
-#maze_display {
-    width: 5000px;
-    line-height: 0;
+/* Main page title styling */
+h1 {
+    margin-bottom: 30px;              /* Space below title */
 }
 
-#container {
-    overflow: auto;
+
+/* ============================================================
+   MODULE BUTTON CONTAINER
+   ------------------------------------------------------------
+   Flexbox layout ensures vertical stacking on mobile.
+   Container width adapts for larger screens.
+   ============================================================ */
+
+/* Container that holds all module buttons */
+.modules {
+    display: flex;                    /* Enable flexbox layout */
+    flex-direction: column;           /* Stack buttons vertically */
+    gap: 15px;                        /* Space between buttons */
+    max-width: 400px;                 /* Maximum width on small screens */
+    margin: 0 auto;                   /* Center container horizontally */
 }
 
-.left_column, .right_column {
-    float: left;
-    width: 50%;
+
+/* ============================================================
+   BUTTON STYLING
+   ------------------------------------------------------------
+   Large, touch-friendly buttons for mobile usability.
+   ============================================================ */
+
+/* Default button appearance */
+button {
+    padding: 18px;                    /* Large padding for touch screens */
+    font-size: 18px;                  /* Bigger text for readability */
+    border: none;                     /* Remove default border */
+    border-radius: 8px;               /* Rounded corners */
+    background-color: #2c7be5;        /* Primary blue color */
+    color: white;                     /* White text */
+    cursor: pointer;                  /* Pointer cursor on hover */
+    transition: background-color 0.2s ease; /* Smooth hover effect */
 }
 
-.clear {
-    clear: both;
+/* Button hover effect (desktop only really noticeable) */
+button:hover {
+    background-color: #1a5edb;        /* Darker blue when hovered */
 }
 
-/* Parent container for positions */
-.camera-container {
-    float: none; /* override float*/
-    position: relative; /* Allows absolute positiong inside */
-    width: 320px;
-    height: 240px;
+/* Disabled button styling (modules 2–6 initially) */
+button:disabled {
+    background-color: #cccccc;        /* Gray background */
+    cursor: not-allowed;              /* Show disabled cursor */
 }
 
-/* Apply same positioning to video and canvas */
-.camera-container video,
-.camera-container canvas {
-    float: none; /* override float*/
-    position: absolute; /* Stack elements on top of each other */
-    top: 0; /* Align to top */
-    left: 0; /* Align to left */
-    width: 320px; /* Fill container width */
-    height: 240px; /* Fill container hight */
+
+/* ============================================================
+   MESSAGE DISPLAY AREA
+   ------------------------------------------------------------
+   Displays backend responses.
+   ============================================================ */
+
+/* Container for displaying API messages */
+#message {
+    margin-top: 30px;                 /* Space above message area */
+    font-size: 18px;                  /* Slightly larger text */
+    font-weight: bold;                /* Emphasize message */
+    color: #333;                      /* Dark gray text */
+    min-height: 24px;                 /* Reserve space to avoid layout shift */
 }
 
-/* Canvas should not block mouse / touch events */
-canvas {
-    z-index: 10; /* Ensure canvas is on top*/
-    pointer-events: none; /* Clicks go through video. */
+
+/* ============================================================
+   RESPONSIVE DESIGN (DESKTOP ENHANCEMENTS)
+   ------------------------------------------------------------
+   Applies when screen width >= 768px.
+   ============================================================ */
+
+@media (min-width: 768px) {
+
+    /* Expand button container on larger screens */
+    .modules {
+        max-width: 600px;             /* Wider layout on desktop */
+    }
+
+    /* Optional enhancement: increase button font size slightly */
+    button {
+        font-size: 20px;
+    }
 }
+
+
+/* ============================================================
+   FUTURE EXTENSION NOTES
+   ------------------------------------------------------------
+   Reserved areas for:
+   - Exercise layouts
+   - Form inputs
+   - Feedback panels
+   - Exam result summaries
+   - Dark mode toggle
+   ============================================================ */
