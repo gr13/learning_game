@@ -1,0 +1,53 @@
+body {
+    background-color: black;
+    color: white;
+
+    margin: 0;
+}
+#settings {
+    background-color: rgb(58, 58, 58);
+    padding: 10px;
+}
+
+#maze_display {
+    width: 5000px;
+    line-height: 0;
+}
+
+#container {
+    overflow: auto;
+}
+
+.left_column, .right_column {
+    float: left;
+    width: 50%;
+}
+
+.clear {
+    clear: both;
+}
+
+/* Parent container for positions */
+.camera-container {
+    float: none; /* override float*/
+    position: relative; /* Allows absolute positiong inside */
+    width: 320px;
+    height: 240px;
+}
+
+/* Apply same positioning to video and canvas */
+.camera-container video,
+.camera-container canvas {
+    float: none; /* override float*/
+    position: absolute; /* Stack elements on top of each other */
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+    width: 320px; /* Fill container width */
+    height: 240px; /* Fill container hight */
+}
+
+/* Canvas should not block mouse / touch events */
+canvas {
+    z-index: 10; /* Ensure canvas is on top*/
+    pointer-events: none; /* Clicks go through video. */
+}

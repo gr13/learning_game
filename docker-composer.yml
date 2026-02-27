@@ -1,0 +1,31 @@
+services:
+    api:
+        build: ./api
+        container_name: api
+        restart: always
+        volumes:
+            - ./api/:/app
+            - ../log/:/logs
+            - ../image:/images
+        environment:
+            - FLASK_APP=/src/run.py
+            - FLASK_SECRET_KEY='flask_secret_key'
+            - DEBUG=1
+        expose:
+            - 9000
+
+    ui:
+        build: ./ui
+        container_name: ui
+        restart: always
+        expose:
+            - 80
+
+    nginx:
+        build: ./nginx
+        container_name: nginx
+        restart: always
+        volumes:
+            - ../log:/var/log/nginx/
+        ports:
+            - "8000:80"

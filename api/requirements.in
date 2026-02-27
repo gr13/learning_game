@@ -1,0 +1,10 @@
+flask
+flask-restful
+flask_cors
+views
+flake8
+Flask-JWT_Extended
+uwsgi
+numpy
+imutils
+openai
