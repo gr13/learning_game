@@ -65,6 +65,9 @@ function requestModule(id) {
 
         /* Handle parsed JSON data */
         .then(data => {
+            console.log("Full response:", data);
+            console.log("Session ID:", data.session_id);
+            currentSessionId = data.session_id;
 
             /* Defensive validation */
             if (!data || !data.message) {
@@ -72,9 +75,10 @@ function requestModule(id) {
                     "Invalid backend response.";
                 return;
             }
+            const message = JSON.parse(data.message);
 
             /* Render structured lesson object */
-            renderModuleContent(data.message);
+            renderModuleContent(message);
         })
 
         /* Catch network / server errors */
@@ -113,30 +117,16 @@ function renderModuleContent(data) {
     container.innerHTML += `<h2>${data.word}</h2>`;
     container.innerHTML += `<p><strong>Part of Speech:</strong> ${data.partOfSpeech}</p>`;
     container.innerHTML += `<p><strong>Pronunciation:</strong> ${data.pronunciation}</p>`;
-    container.innerHTML += `<p><strong>Definition:</strong> ${data.simpleDefinition}</p>`;
+    container.innerHTML += `<p><strong>Definition:</strong> ${data.definition}</p>`;
 
-    // Other common uses
-    if (data.otherCommonUses) {
-        container.innerHTML += "<h3>Other Common Uses:</h3>";
-        data.otherCommonUses.forEach(use => {
-            container.innerHTML += `
-                <div class="example">
-                    <div><strong>${use.meaning}</strong></div>
-                    <div>${use.exampleGerman}</div>
-                    <div class="translation">${use.exampleEnglish}</div>
-                </div>
-            `;
-        });
-    }
-
-    // Examples
+    // examples
     if (data.examples) {
         container.innerHTML += "<h3>Examples:</h3>";
         data.examples.forEach(example => {
             container.innerHTML += `
                 <div class="example">
-                    <div>${example.german}</div>
-                    <div class="translation">${example.english}</div>
+                    <div><strong>${example.de}</strong></div>
+                    <div class="translation">${example.en}</div>
                 </div>
             `;
         });

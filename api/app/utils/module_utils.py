@@ -106,6 +106,8 @@ class ModuleUtils:
 
         SessionStore.append_message(session_id, "assistant", assistant_reply)
 
+        print("SESSION STATE:", SessionStore.get_messages(session_id))
+
         return {"message": assistant_reply}
 
     def continue_module1(self, session_id, user_input) -> Dict:

@@ -11,18 +11,51 @@ import uuid
 #   }
 # }
 
-SESSIONS = {}
-
 
 class SessionStore:
-    @staticmethod
-    def create_session(module_id: int):
+    """
+    In-memory session storage (temporary).
+    Class-based design.
+    Shared across entire application.
+    """
+    _sessions = {}
 
+    @classmethod
+    def create_session(cls, module_id: int):
+        """
+        Creates a new session and returns session_id.
+        """
         session_id = str(uuid.uuid4())
 
-        SESSIONS[session_id] = {
+        cls._sessions[session_id] = {
             "module": module_id,
             "messages": []
         }
 
         return session_id
+
+    @classmethod
+    def append_message(cls, session_id, role, content):
+        """
+        Appends a message to session history.
+        """
+        cls._sessions[session_id]["messages"].append(
+            {
+                "role": role,
+                "content": content
+            }
+        )
+
+    @classmethod
+    def get_messages(cls, session_id):
+        """
+        Returns message list for given session.
+        """
+        return cls._sessions[session_id]["messages"]
+
+    @classmethod
+    def has_session(cls, session_id):
+        """
+        Optional safety check.
+        """
+        return session_id in cls._sessions
