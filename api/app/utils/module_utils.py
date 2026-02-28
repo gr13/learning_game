@@ -115,14 +115,27 @@ class ModuleUtils:
         Prepares list of messages
         receives the answer
         """
+        system_prompt = """
+            Now continue the exercise.
+            Do not repeat the explanation.
+            Show only the next task or feedback.
+            No JSON. Just plain text.
+        """
+        # Add user answer to session
         SessionStore.append_message(session_id, "user", user_input)
-
+        # Add NEW system instruction BEFORE calling GPT
+        # Only add exercise system instruction if not already added
         messages = SessionStore.get_messages(session_id)
 
+        SessionStore.ensure_exercise_mode(session_id, system_prompt)
+
+        # Get full message history
+        messages = SessionStore.get_messages(session_id)
+        # Call GPT
         response = self.chat.send_messages(messages)
 
         assistant_reply = response.choices[0].message.content
-
+        # Store assistant reply
         SessionStore.append_message(session_id, "assistant", assistant_reply)
 
         return {"message": assistant_reply}

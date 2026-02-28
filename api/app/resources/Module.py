@@ -20,7 +20,7 @@ class Module(Resource):
         result["session_id"] = session_id
         return result
 
-    def post(self):
+    def post(self, module_id):
         """
         extablish countious learning
 
@@ -33,7 +33,6 @@ class Module(Resource):
         """
         data = request.get_json()
 
-        module_id = data.get("module_id")
         session_id = data.get("session_id")
         user_input = data.get("user_input")
 
@@ -48,3 +47,5 @@ class Module(Resource):
                 user_input=user_input
             )
             return result
+
+        return {"error": "Module not implemented"}, 400

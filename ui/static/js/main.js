@@ -18,6 +18,9 @@
  * ============================================================
  */
 
+let currentModuleId = null;
+let currentSessionId = null;
+
 
 
 /**
@@ -65,6 +68,7 @@ function requestModule(id) {
 
         /* Handle parsed JSON data */
         .then(data => {
+            currentModuleId = id;
             console.log("Full response:", data);
             console.log("Session ID:", data.session_id);
             currentSessionId = data.session_id;
@@ -108,53 +112,77 @@ function requestModule(id) {
  * @param {Object} data - Structured lesson object
  */
 function renderModuleContent(data) {
+    console.log("waipoint 2");
     console.log(data);
     console.log(data.word);
 
     const container = document.getElementById("message");
-    container.innerHTML = "";
 
-    container.innerHTML += `<h2>${data.word}</h2>`;
-    container.innerHTML += `<p><strong>Part of Speech:</strong> ${data.partOfSpeech}</p>`;
-    container.innerHTML += `<p><strong>Pronunciation:</strong> ${data.pronunciation}</p>`;
-    container.innerHTML += `<p><strong>Definition:</strong> ${data.definition}</p>`;
+    const block = document.createElement("div");
+    block.className = "assistant-message";
 
-    // examples
+    block.innerHTML = `
+        <div class="assistant-full">
+            <strong>${data.word}</strong><br>
+            <strong>Part of Speech:</strong> ${data.partOfSpeech}<br>
+            <strong>Pronunciation:</strong> ${data.pronunciation}<br>
+            <strong>Definition:</strong> ${data.definition}
+        </div>
+    `;
+
     if (data.examples) {
-        container.innerHTML += "<h3>Examples:</h3>";
+        const examples = document.createElement("div");
+        examples.innerHTML = "<h3>Examples:</h3>";
+
         data.examples.forEach(example => {
-            container.innerHTML += `
+            examples.innerHTML += `
                 <div class="example">
                     <div><strong>${example.de}</strong></div>
                     <div class="translation">${example.en}</div>
                 </div>
             `;
         });
+        block.appendChild(examples);
     }
 
-    // Conjugation
-    if (data.conjugationPresent) {
-        container.innerHTML += "<h3>Present Tense:</h3><ul>";
-        for (const person in data.conjugationPresent) {
-            container.innerHTML += `<li>${person}: ${data.conjugationPresent[person]}</li>`;
-        }
-        container.innerHTML += "</ul>";
-    }
+    container.appendChild(block);
+    container.scrollTop = container.scrollHeight;
 
-    if (data.simplePast) {
-        container.innerHTML += `<p><strong>Simple Past:</strong> ${data.simplePast}</p>`;
-    }
-
-    if (data.pastParticiple) {
-        container.innerHTML += `<p><strong>Past Participle:</strong> ${data.pastParticiple}</p>`;
-    }
-
-    if (data.usageNotes) {
-        container.innerHTML += `<p><strong>Notes:</strong> ${data.usageNotes}</p>`;
-    }
 }
 
+function appendUserMessage(text) {
 
+    const container = document.getElementById("message");
+
+    const block = document.createElement("div");
+    block.className = "user-message";
+
+    block.innerHTML = `
+        <div class="user-bubble">
+            ${text}
+        </div>
+    `;
+
+    container.appendChild(block);
+    container.scrollTop = container.scrollHeight;
+}
+
+function appendAssistantText(text) {
+
+    const container = document.getElementById("message");
+
+    const block = document.createElement("div");
+    block.className = "assistant-message";
+
+    block.innerHTML = `
+        <div class="assistant-full">
+            ${text}
+        </div>
+    `;
+
+    container.appendChild(block);
+    container.scrollTop = container.scrollHeight;
+}
 
 /**
  * ============================================================
@@ -168,4 +196,56 @@ function showMenu() {
 
     document.getElementById("module-menu").style.display = "block";
     document.getElementById("module-content").style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const textarea = document.getElementById("user-input");
+
+    textarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
+    });
+
+    textarea.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            sendAnswer();
+        }
+
+    });
+
+});
+
+function sendAnswer() {
+    const textarea = document.getElementById("user-input");
+    const text = document.getElementById("user-input").value.trim();
+
+    if (!text) return;
+
+    appendUserMessage(text);
+
+    fetch(`/api/modules/${currentModuleId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            module_id: currentModuleId,
+            session_id: currentSessionId,
+            user_input: text
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("waipoint 1");
+        appendAssistantText(data.message);
+
+        textarea.value = "";
+        textarea.style.height = "auto";
+    })
+    .catch(error => {
+        console.error("POST Error:", error);
+    });;
 }

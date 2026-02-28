@@ -59,3 +59,30 @@ class SessionStore:
         Optional safety check.
         """
         return session_id in cls._sessions
+
+    @staticmethod
+    def ensure_exercise_mode(
+            session_id: int,
+            system_prompt: str
+                             ) -> None:
+        """
+        Ensures that the exercise-mode system instruction
+        is added only once to the session.
+        """
+
+        messages = SessionStore.get_messages(session_id)
+
+        already_set = any(
+            (
+                m["role"] == "system"
+                and "Now continue the exercise" in m["content"]
+            )
+            for m in messages
+        )
+
+        if not already_set:
+            SessionStore.append_message(
+                session_id,
+                "system",
+                system_prompt,
+            )
