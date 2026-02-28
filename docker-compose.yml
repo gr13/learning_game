@@ -9,8 +9,10 @@ services:
             - ../image:/images
         environment:
             - FLASK_APP=/src/run.py
-            - FLASK_SECRET_KEY='flask_secret_key'
+            - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
             - DEBUG=1
+            - OPENAI_API_KEY=${OPENAI_API_KEY}
+            - OPENAI_MODEL=gpt-5-mini
         expose:
             - 9000
 

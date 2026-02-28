@@ -7,17 +7,25 @@
         <link rel="stylesheet" href="static/style.css">
     </head>
     <body>
+        <div id = "top-bar">
+            <div id="balance">Balance: $5.00</div>
+        </div>
         <h1>Language Learning App</h1>
-        <div class="modules">
-            <button onclick="requestModule(1)">1 - Core Vocabulary</button>
-            <button onclick="requestModule(2)">2 - Domain Vocabulary</button>
-            <button onclick="requestModule(3)">3 - Reading Exam</button>
-            <button onclick="requestModule(4)">4 - Writing Exam</button>
-            <button onclick="requestModule(5)">5 - Speaking Exam</button>
-            <button onclick="requestModule(6)">6 - Exam</button>
+        <div id="module-menu">
+            <div class="modules">
+                <button onclick="requestModule(1)">1 - Core Vocabulary</button>
+                <button onclick="requestModule(2)">2 - Domain Vocabulary</button>
+                <button onclick="requestModule(3)">3 - Reading Exam</button>
+                <button onclick="requestModule(4)">4 - Writing Exam</button>
+                <button onclick="requestModule(5)">5 - Speaking Exam</button>
+                <button onclick="requestModule(6)">6 - Exam</button>
+            </div>
         </div>
 
-        <div id="message"></div>
+        <div id="module-content" style = "display:none;">
+            <button class="back-button" onclick="showMenu()">← Back to Modules</button>
+            <div id="message"></div>
+        </div>
 
         <!-- External JS -->
         <script src="static/js/main.js"></script>

@@ -18,47 +18,64 @@ body {
     margin: 0;                        /* Remove default margin */
     padding: 20px;                    /* Add inner spacing */
     background-color: #f4f4f4;        /* Light gray background */
-    text-align: center;               /* Center all inline content */
 }
 
-/* Main page title styling */
+/* ============================================================
+   APPLICATION TITLE
+   ------------------------------------------------------------
+   Main page heading styling.
+   ============================================================ */
+
 h1 {
-    margin-bottom: 30px;              /* Space below title */
+    text-align: center;                 /* Center title only */
+    margin-bottom: 30px;                /* Space below title */
 }
 
 
 /* ============================================================
-   MODULE BUTTON CONTAINER
+   MODULE BUTTON SECTION
    ------------------------------------------------------------
-   Flexbox layout ensures vertical stacking on mobile.
-   Container width adapts for larger screens.
+   Displays large module selection buttons.
+   Vertical layout for mobile friendliness.
    ============================================================ */
 
 /* Container that holds all module buttons */
 .modules {
-    display: flex;                    /* Enable flexbox layout */
-    flex-direction: column;           /* Stack buttons vertically */
-    gap: 15px;                        /* Space between buttons */
-    max-width: 400px;                 /* Maximum width on small screens */
-    margin: 0 auto;                   /* Center container horizontally */
+    display: flex;                      /* Enable flex layout */
+    flex-direction: column;             /* Stack buttons vertically */
+    gap: 15px;                          /* Space between buttons */
+    max-width: 400px;                   /* Limit width for readability */
+    margin: 0 auto;                     /* Center horizontally */
 }
 
+/* ============================================================
+   MODULE CONTENT AREA
+   ------------------------------------------------------------
+   Controls width and positioning of lesson content.
+   Ensures readable column layout on desktop.
+   ============================================================ */
+
+#module-content {
+    max-width: 700px;                   /* Limit line length */
+    margin: 20px auto;                  /* Center horizontally */
+}
 
 /* ============================================================
-   BUTTON STYLING
+   MODULE BUTTON STYLE
    ------------------------------------------------------------
-   Large, touch-friendly buttons for mobile usability.
+   Large touch-friendly buttons.
+   Optimized for mobile and desktop.
    ============================================================ */
 
 /* Default button appearance */
 button {
-    padding: 18px;                    /* Large padding for touch screens */
-    font-size: 18px;                  /* Bigger text for readability */
-    border: none;                     /* Remove default border */
-    border-radius: 8px;               /* Rounded corners */
-    background-color: #2c7be5;        /* Primary blue color */
-    color: white;                     /* White text */
-    cursor: pointer;                  /* Pointer cursor on hover */
+    padding: 18px;                      /* Large touch area */
+    font-size: 18px;                    /* Easy to read */
+    border: none;                       /* Remove default border */
+    border-radius: 8px;                 /* Rounded corners */
+    background-color: #2c7be5;          /* Primary blue */
+    color: white;                       /* White text */
+    cursor: pointer;                    /* Pointer cursor */
     transition: background-color 0.2s ease; /* Smooth hover effect */
 }
 
@@ -75,19 +92,45 @@ button:disabled {
 
 
 /* ============================================================
-   MESSAGE DISPLAY AREA
+   MESSAGE CARD (LESSON CONTENT)
    ------------------------------------------------------------
-   Displays backend responses.
+   Styled container for GPT-generated lesson.
+   Card layout improves readability and visual grouping.
    ============================================================ */
 
 /* Container for displaying API messages */
 #message {
-    margin-top: 30px;                 /* Space above message area */
-    font-size: 18px;                  /* Slightly larger text */
-    font-weight: bold;                /* Emphasize message */
-    color: #333;                      /* Dark gray text */
-    min-height: 24px;                 /* Reserve space to avoid layout shift */
+    background: white;                  /* Card background */
+    padding: 20px;                      /* Inner spacing */
+    border-radius: 10px;                /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Soft shadow */
+    text-align: left;                   /* IMPORTANT: readable alignment */
+    line-height: 1.6;                   /* Improve readability */
 }
+
+/* ============================================================
+   TYPOGRAPHY REFINEMENTS
+   ------------------------------------------------------------
+   Adjust spacing and structure of headings and examples.
+   ============================================================ */
+
+h2 {
+    margin-top: 0;                      /* Remove extra space at top */
+}
+
+h3 {
+    margin-top: 20px;                   /* Add space before sections */
+}
+
+.example {
+    margin-bottom: 10px;                /* Space between examples */
+}
+
+.translation {
+    color: #666;                        /* Subtle gray translation text */
+    font-size: 14px;                    /* Slightly smaller */
+}
+
 
 
 /* ============================================================
@@ -100,13 +143,71 @@ button:disabled {
 
     /* Expand button container on larger screens */
     .modules {
-        max-width: 600px;             /* Wider layout on desktop */
+        max-width: 500px;             /* Wider layout on desktop */
     }
 
     /* Optional enhancement: increase button font size slightly */
     button {
         font-size: 20px;
     }
+}
+
+
+p {
+    margin: 4px 0;
+}
+
+/* ============================================================
+   META INFORMATION (word header compact layout)
+   ============================================================ */
+
+.meta-line {
+    margin: 4px 0;        /* Very small vertical spacing */
+    font-size: 14px;      /* Slightly smaller */
+    color: #555;          /* Softer tone */
+}
+
+.definition {
+    margin: 10px 0;       /* Slight spacing after meta */
+    font-size: 16px;      /* Main text size */
+}
+
+/* ============================================================
+   TOP BAR (BALANCE DISPLAY)
+   ------------------------------------------------------------
+   Positioned at the top-right.
+   Displays current remaining budget.
+   ============================================================ */
+
+#top-bar {
+    display: flex;                      /* Use flexbox for alignment */
+    justify-content: flex-end;          /* Push content to right side */
+    margin-bottom: 10px;                /* Space below top bar */
+}
+
+#balance {
+    font-size: 14px;                    /* Small but readable */
+    font-weight: bold;                  /* Emphasize value */
+    color: #333;                        /* Dark gray */
+}
+
+/* ============================================================
+   BACK BUTTON STYLE
+   ------------------------------------------------------------
+   Smaller, secondary-style button.
+   Used to return to module menu.
+   ============================================================ */
+
+.back-button {
+    padding: 6px 20px;                  /* Smaller vertical padding */
+    font-size: 14px;                    /* Reduced font size */
+    border-radius: 6px;                 /* Slightly smaller radius */
+    background-color: #666;             /* Neutral gray */
+    margin-bottom: 15px;                /* Space below */
+}
+
+.back-button:hover {
+    background-color: #444;             /* Darker gray hover */
 }
 
 
