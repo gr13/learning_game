@@ -4,8 +4,13 @@ from openai import OpenAI
 
 class ChatGPT:
     """
-    handles communication with OpenAI API.
-    No business logic here.
+    Thin wrapper around OpenAI Chat API.
+
+    IMPORTANT:
+    - This class stores NO conversation history.
+    - It does NOT manage sessions.
+    - It only sends whatever messages it receives.
+    - Session logic must be handled elsewhere.
     """
 
     def __init__(self):
@@ -22,20 +27,23 @@ class ChatGPT:
         self.client = OpenAI(api_key=api_key)
         self.model: str = model
 
-    def send_message(
-            self,
-            system_promt: str,
-            user_prompt: str
-    ) -> str:
+    # ----------------------------------------------------------
+    # Session-based conversation call (main method)
+    # ----------------------------------------------------------
+    def send_messages(self, messages: list):
         """
-        Sends a structured request to GPT and returns text response.
+        Sends full conversation history.
+
+        `messages` must be a list of:
+        [
+            {"role": "system", "content": "..."},
+            {"role": "user", "content": "..."},
+            {"role": "assistant", "content": "..."},
+            ...
+        ]
         """
 
-        response = self.client.chat.completions.create(
+        return self.client.chat.completions.create(
             model=self.model,
-            messages=[
-                {"role": "system", "content": system_promt},
-                {"role": "user", "content": user_prompt},
-            ]
+            messages=messages
         )
-        return response.choices[0].message.content

@@ -1,6 +1,31 @@
-import json
 from typing import Dict
 from app.utils.chatgpt import ChatGPT
+from app.utils.session_store import SessionStore
+
+SIMPLE_PLAN = """
+Module 1 – Core Vocabulary Practice
+
+- Review introduced words.
+- Introduce one new word.
+- Create 5 short tasks.
+- Mix translation and simple grammar.
+- Keep exercises short.
+"""
+
+INTRODUCED_WORDS = """
+gehen
+kommen
+lernen
+arbeiten
+wohnen
+essen
+trinken
+lesen
+schreiben
+sehen
+"""
+
+NEW_WORD = "Spiel"
 
 
 class ModuleUtils:
@@ -12,20 +37,24 @@ class ModuleUtils:
     def __init__(self):
         self.chat = ChatGPT()
 
-    def handle_module(self, module_id: int) -> Dict:
+    def handle_module(self,
+                      module_id: int,
+                      session_id: int
+                      ) -> Dict:
         """
         Entry point for module logic.
         """
         if module_id == 1:
-            return self._handle_module_1()
+            return self.initiate_module1(session_id)
         return {"message": f"Module {module_id} not implemented yet"}
 
-    def _handle_module_1(self) -> Dict:
+    def initiate_module1(
+            self, session_id: int
+                        ) -> Dict:
         """
-        Simulate Module 1 basic logic.
-        Later: load words from DB.
+        Creates session
+        Send System_prompt and user_prompt to chatGPT
         """
-
         system_prompt = """
             You are a German language teacher.
 
@@ -37,6 +66,7 @@ class ModuleUtils:
 
         user_prompt = """
             Explain the word 'gehen' at A1 level.
+
             Return ONLY valid JSON.
             No markdown.
             No text outside JSON.
@@ -64,11 +94,33 @@ class ModuleUtils:
                 }
             }
         """
-        user_prompt = "Explain the word 'gehen' in simple terms."
 
-        response = self.chat.send_message(system_prompt, user_prompt)
+        SessionStore.append_message(session_id, "system", system_prompt)
+        SessionStore.append_message(session_id, "user", user_prompt)
 
-        return {
-            "module": 1,
-            "message": json.loads(response)
-        }
+        messages = SessionStore.get_messages(session_id)
+
+        response = self.chat.send_messages(messages)
+
+        assistant_reply = response.choices[0].message.content
+
+        SessionStore.append_message(session_id, "assistant", assistant_reply)
+
+        return {"message": assistant_reply}
+
+    def continue_module1(self, session_id, user_input) -> Dict:
+        """
+        Prepares list of messages
+        receives the answer
+        """
+        SessionStore.append_message(session_id, "user", user_input)
+
+        messages = SessionStore.get_messages(session_id)
+
+        response = self.chat.send_messages(messages)
+
+        assistant_reply = response.choices[0].message.content
+
+        SessionStore.append_message(session_id, "assistant", assistant_reply)
+
+        return {"message": assistant_reply}
