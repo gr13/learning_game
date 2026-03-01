@@ -79,10 +79,33 @@ function requestModule(id) {
                     "Invalid backend response.";
                 return;
             }
-            const message = JSON.parse(data.message);
 
-            /* Render structured lesson object */
-            renderModuleContent(message);
+            if (data.mode === "text") {
+                appendAssistantText(data.message);
+                return;
+            }
+
+            if (data.mode === "json") {
+
+                const payload = data.message;
+
+                if (!payload) {
+                    appendAssistantText("Empty JSON payload.");
+                    return;
+                }
+
+                if (Array.isArray(payload)) {
+                    payload.forEach(item => {
+                        routeLessonPayload(item);
+                    });
+                    return;
+                }
+
+                routeLessonPayload(payload);
+                return;
+            }
+
+            appendAssistantText("Unsupported response type.");
         })
 
         /* Catch network / server errors */
@@ -225,12 +248,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function sendAnswer() {
     const textarea = document.getElementById("user-input");
-    const text = document.getElementById("user-input").value.trim();
+    const text = textarea.value.trim();
 
     if (!text) return;
 
     appendUserMessage(text);
     textarea.value = "";
+    textarea.style.height = "auto";
 
     fetch(`/api/modules/${currentModuleId}`, {
         method: "POST",
@@ -245,11 +269,42 @@ function sendAnswer() {
     })
     .then(res => res.json())
     .then(data => {
-        console.log("waipoint 1");
-        appendAssistantText(data.message);
 
-        
-        textarea.style.height = "auto";
+        if (!data || !data.message) {
+            appendAssistantText("Invalid backend response.");
+            return;
+        }
+
+        // TEXT MODE
+        if (data.mode === "text") {
+            appendAssistantText(data.message);
+            return;
+        }
+
+        // JSON MODE
+        if (data.mode === "json") {
+
+            const payload = data.message;
+
+            if (!payload) {
+                appendAssistantText("Empty JSON payload.");
+                return;
+            }
+
+            // 🔵 CASE 1: Array of exercises
+            if (Array.isArray(payload)) {
+                payload.forEach(item => {
+                    routeLessonPayload(item);
+                });
+                return;
+            }
+
+            // 🔵 CASE 2: Single object
+            routeLessonPayload(payload);
+            return;
+        }
+
+        appendAssistantText("Unsupported response type.");
     })
     .catch(error => {
         console.error("POST Error:", error);
@@ -294,4 +349,60 @@ function endModule() {
     btn.disabled = true;
 
     console.log("Module ended safely");
+}
+
+function routeLessonPayload(payload) {
+
+    if (!payload || !payload.mode) {
+        appendAssistantText("Malformed lesson payload.");
+        return;
+    }
+
+    switch (payload.mode) {
+
+        case "explanation":
+            renderModuleContent(payload);
+            break;
+
+        case "exercise":
+            renderExercise(payload);
+            break;
+
+        case "micro_drill":
+            renderMicroDrill(payload);
+            break;
+
+        default:
+            console.warn("Unknown lesson mode:", payload.mode);
+            appendAssistantText("Unknown lesson type.");
+    }
+}
+
+function renderExercise(data) {
+
+    const container = document.getElementById("message");
+
+    const block = document.createElement("div");
+    block.className = "assistant-message";
+
+    block.innerHTML = `
+        <div class="assistant-full">
+            <strong>Exercise ${data.exerciseNumber || ""}</strong><br>
+            <em>${data.exerciseType || ""}</em>
+        </div>
+    `;
+
+    if (data.tasks) {
+        data.tasks.forEach((task, index) => {
+            const taskDiv = document.createElement("div");
+            taskDiv.className = "example";
+            taskDiv.innerHTML = `
+                <div><strong>Task ${index + 1}:</strong> ${task.instruction}</div>
+            `;
+            block.appendChild(taskDiv);
+        });
+    }
+
+    container.appendChild(block);
+    container.scrollTop = container.scrollHeight;
 }

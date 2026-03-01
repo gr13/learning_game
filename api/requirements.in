@@ -8,3 +8,4 @@ uwsgi
 numpy
 imutils
 openai
+jsonschema
