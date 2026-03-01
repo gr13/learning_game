@@ -5,6 +5,7 @@
 import { getModule, postAnswer } from "./api.js";
 import { handleBackendResponse } from "./router.js";
 import { setupAutoResize } from "./ui.js";
+import { appendUserText } from "./renderer.js";
 
 let currentModuleId = null;
 let currentSessionId = null;
@@ -34,11 +35,12 @@ window.requestModule = async function (id) {
 // ------------------------------
 window.sendAnswer = async function () {
 
-    const textarea = document.getElementById("user-input");
-    const text = textarea.value.trim();
+    const input_textarea = document.getElementById("user-input");
+    const text = input_textarea.value.trim();
     if (!text) return;
 
-    textarea.value = "";
+    appendUserText(text);
+    input_textarea.value = "";
 
     try {
         const data = await postAnswer(

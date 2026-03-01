@@ -14,6 +14,18 @@ export function appendAssistantText(text) {
     container.scrollTop = container.scrollHeight;
 }
 
+export function appendUserText(text) {
+
+    const container = document.getElementById("message");
+
+    const block = document.createElement("div");
+    block.className = "user-message";
+    block.innerHTML = `<div class="user-bubble">${text}</div>`;
+
+    container.appendChild(block);
+    container.scrollTop = container.scrollHeight;
+}
+
 // --------------------------------
 // Explanation Renderer
 // --------------------------------
@@ -33,6 +45,25 @@ export function renderExplanation(data) {
         </div>
     `;
 
+    // -------------------------
+    // Forms (if present)
+    // -------------------------
+    if (data.forms) {
+
+        const formsDiv = document.createElement("div");
+        formsDiv.innerHTML = `
+            <h3>Forms:</h3>
+            <div><strong>Präsens:</strong> ${data.forms.praesens || ""}</div>
+            <div><strong>Präteritum:</strong> ${data.forms.praeteritum || ""}</div>
+            <div><strong>Perfekt:</strong> ${data.forms.perfekt || ""}</div>
+        `;
+
+        block.appendChild(formsDiv);
+    }
+
+    // -------------------------
+    // Examples
+    // -------------------------
     if (data.examples) {
         const examples = document.createElement("div");
         examples.innerHTML = "<h3>Examples:</h3>";
