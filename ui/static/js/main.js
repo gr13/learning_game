@@ -255,3 +255,43 @@ function sendAnswer() {
         console.error("POST Error:", error);
     });;
 }
+
+let endClickTimeout = null;
+let endClickArmed = false;
+
+function endModule() {
+
+    const btn = document.querySelector(".end-button");
+
+    if (!endClickArmed) {
+        endClickArmed = true;
+
+        btn.textContent = "Click again to confirm";
+        btn.style.color = "#ff6b6b";
+
+        endClickTimeout = setTimeout(() => {
+            endClickArmed = false;
+            btn.textContent = "End Module";
+            btn.style.color = "#ccc";
+        }, 2000);
+
+        return;
+    }
+
+    clearTimeout(endClickTimeout);
+
+    // 🔥 Disable input properly
+    const textarea = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    textarea.disabled = true;
+    sendBtn.disabled = true;
+
+    // Optional: visually indicate end
+    textarea.placeholder = "Module ended";
+
+    btn.textContent = "Module Ended";
+    btn.disabled = true;
+
+    console.log("Module ended safely");
+}
