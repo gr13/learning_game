@@ -42,18 +42,19 @@ let currentSessionId = null;
 function requestModule(id) {
 
     /* ------------------------------------------------------------
-       1️⃣  UI STATE TRANSITION
+       UI STATE TRANSITION
        ------------------------------------------------------------
        Switch from module menu to lesson view.
        This creates a simple SPA-like behavior.
     ------------------------------------------------------------ */
-
+    
+    document.getElementById("app-title").style.display = "none";
     document.getElementById("module-menu").style.display = "none";
     document.getElementById("module-content").style.display = "block";
-
+    document.getElementById("answer-section").style.display = "flex";
 
     /* ------------------------------------------------------------
-       2️⃣  BACKEND REQUEST
+       BACKEND REQUEST
        ------------------------------------------------------------
        We call the API endpoint dynamically based on module ID.
        Example:
@@ -194,8 +195,10 @@ function appendAssistantText(text) {
  */
 function showMenu() {
 
+    document.getElementById("app-title").style.display = "block";
     document.getElementById("module-menu").style.display = "block";
     document.getElementById("module-content").style.display = "none";
+    document.getElementById("answer-section").style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
