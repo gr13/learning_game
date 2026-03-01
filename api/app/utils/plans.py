@@ -88,6 +88,17 @@ MODULE_1_PLAN = {
             },
             "phase_2_exercises": {
                 "json_only": True,
+                "sequential_mode": True,
+                "exercise_progression": "one_per_message",
+                "exact_exercise_count": 5,
+                "required_exercise_types": [
+                    "new_word_drill",
+                    "repetition_drill",
+                    "context_usage",
+                    "mixed_tense_drill",
+                    "review_self_test"
+                ],
+                "tasks_per_exercise": 5,
                 "exact_task_count": 5,
                 "rules": {
                     "focus_primary": "the_new_word",
