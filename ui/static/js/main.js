@@ -50,8 +50,7 @@ function requestModule(id) {
     
     document.getElementById("app-title").style.display = "none";
     document.getElementById("module-menu").style.display = "none";
-    document.getElementById("module-content").style.display = "block";
-    document.getElementById("answer-section").style.display = "flex";
+    document.getElementById("lesson-area").style.display = "block";
 
     /* ------------------------------------------------------------
        BACKEND REQUEST
@@ -196,9 +195,12 @@ function appendAssistantText(text) {
 function showMenu() {
 
     document.getElementById("app-title").style.display = "block";
+    // Show module selection
     document.getElementById("module-menu").style.display = "block";
-    document.getElementById("module-content").style.display = "none";
-    document.getElementById("answer-section").style.display = "none";
+    // Hide lesson area
+    document.getElementById("lesson-area").style.display = "none";
+
+    document.getElementById("message").innerHTML = "";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -228,6 +230,7 @@ function sendAnswer() {
     if (!text) return;
 
     appendUserMessage(text);
+    textarea.value = "";
 
     fetch(`/api/modules/${currentModuleId}`, {
         method: "POST",
@@ -245,7 +248,7 @@ function sendAnswer() {
         console.log("waipoint 1");
         appendAssistantText(data.message);
 
-        textarea.value = "";
+        
         textarea.style.height = "auto";
     })
     .catch(error => {

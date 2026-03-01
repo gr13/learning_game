@@ -19,19 +19,18 @@
             </div>
         </div>
 
-        <div id="module-content" style = "display:none;">
-            <button class="back-button" onclick="showMenu()">← Back to Modules</button>
-            <div id="message"></div>
-        </div>
+        <div id="lesson-area" style="display: none;">
+            <div id="module-content">
+                <button class="back-button" onclick="showMenu()">← Back to Modules</button>
+                <div id="message"></div>
+            </div>
 
-        <div id="answer-section">
-            <textarea id="user-input"
-                    rows="1"
-                    placeholder="Type your answer..."></textarea>
-
-            <button id="send-btn" onclick="sendAnswer()">
-                ↑
-            </button>
+            <div id="answer-section">
+                <textarea id="user-input" placeholder="Type your answer..."></textarea>
+                <button id="send-btn" onclick="sendAnswer()">
+                    ↑
+                </button>
+            </div>
         </div>
 
         <!-- External JS -->
