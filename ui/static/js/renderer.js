@@ -8,7 +8,8 @@ export function appendAssistantText(text) {
 
     const block = document.createElement("div");
     block.className = "assistant-message";
-    block.innerHTML = `<div class="assistant-full">${text}</div>`;
+    block.innerHTML =
+        `<div class="assistant-full">${text.replace(/\n/g, "<br>")}</div>`;
 
     container.appendChild(block);
     container.scrollTop = container.scrollHeight;

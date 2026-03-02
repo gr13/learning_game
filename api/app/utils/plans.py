@@ -91,13 +91,6 @@ MODULE_1_PLAN = {
                 "sequential_mode": True,
                 "exercise_progression": "one_per_message",
                 "exact_exercise_count": 5,
-                "required_exercise_types": [
-                    "new_word_drill",
-                    "repetition_drill",
-                    "context_usage",
-                    "mixed_tense_drill",
-                    "review_self_test"
-                ],
                 "tasks_per_exercise": 5,
                 "exact_task_count": 5,
                 "rules": {
@@ -138,16 +131,45 @@ MODULE_1_PLAN = {
         "feedback_mode": {
             "json_only": False,
             "plain_text_only": True,
-            "concise": True,
+
+            "correction_style": "natural_teacher",
+            "structured_but_not_robotic": True,
+            "group_by_exercise": True,
             "correct_each_task": True,
+
+            "correction_flow": [
+                "state_if_correct",
+                "provide_correct_version_if_needed",
+                "brief_natural_explanation",
+                "optional_micro_example_if_helpful"
+            ],
+
+            "tone_rules": {
+                "avoid_robotic_numbering_inside_explanations": True,
+                "avoid_repeating_rule_labels": True,
+                "sound_like_human_teacher": True,
+                "avoid_unnecessary_theory": True,
+                "max_sentences_per_error": 4
+            },
+
             "respect_practice_level": True,
             "include_level_label": True,
+
             "recommendation_required": True,
+            "recommendation_must_match_exact_option": True,
+            "recommendation_no_extra_text": True,
+
             "recommendation_options": [
                 "A – Next Exercise",
                 "B – Repeat Exercise",
                 "C – Micro Drill"
-            ]
+            ],
+
+            "recommendation_logic": {
+                "if_multiple_grammar_errors": "C – Micro Drill",
+                "if_minor_errors": "B – Repeat Exercise",
+                "if_all_correct": "A – Next Exercise"
+            }
         },
         "micro_drill": {
             "json_only": True,
