@@ -1,12 +1,40 @@
 services:
+    db:
+        # M1 processor require platform
+        platform: linux/x86_64
+        # image: mysql:latest
+        build: ./mysql
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${DATABASE_NAME}
+            - MYSQL_ALLOW_EMPTY_PASSWORD=no
+        volumes:
+            - ./mysql:/docker-entrypoint-initdb.d
+            - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ../db:/var/lib/mysql
+            - ../logs/mysql:/var/log/mysql
+        expose:
+            - 3306
+        # ports:
+        #     - 3306:3306
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        depends_on:
+            - db
+        environment:
+            - PMA_HOST=db
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        ports:
+            - "127.0.0.1:8080:80"
     api:
         build: ./api
         container_name: api
         restart: always
         volumes:
             - ./api/:/app
-            - ../log/:/logs
-            - ../image:/images
+            - ../logs/api/:/logs
         environment:
             - FLASK_APP=/src/run.py
             - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
@@ -28,6 +56,6 @@ services:
         container_name: nginx
         restart: always
         volumes:
-            - ../log:/var/log/nginx/
+            - ../logs/nginx:/var/log/nginx/
         ports:
             - "8000:80"
