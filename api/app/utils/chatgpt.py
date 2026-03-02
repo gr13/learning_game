@@ -1,5 +1,6 @@
 import os
 from openai import OpenAI
+from app.utils.performance import time_register
 
 
 class ChatGPT:
@@ -30,6 +31,7 @@ class ChatGPT:
     # ----------------------------------------------------------
     # Session-based conversation call (main method)
     # ----------------------------------------------------------
+    @time_register("GPT Call")
     def send_messages(self, messages: list):
         """
         Sends full conversation history.

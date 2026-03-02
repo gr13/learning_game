@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request
 from app.utils.module_utils import ModuleUtils
 from app.utils.session_store import SessionStore
+from app.utils.performance import time_register
 
 
 class Module(Resource):
@@ -11,6 +12,7 @@ class Module(Resource):
     def __init__(self):
         self.module_utils = ModuleUtils()
 
+    @time_register("Module GET")
     def get(self, module_id):
         """
         initiates the module
@@ -20,6 +22,7 @@ class Module(Resource):
         result["session_id"] = session_id
         return result
 
+    @time_register("Module POST")
     def post(self, module_id):
         """
         extablish countious learning

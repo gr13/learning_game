@@ -140,6 +140,7 @@ Do not mix formats.
 
             messages = SessionStore.get_messages(session_id)
             response = self.chat.send_messages(messages)
+            print(f"usage: {response.usage}")
             assistant_reply = response.choices[0].message.content
 
             is_json = ResponseHandler.is_json(assistant_reply)
