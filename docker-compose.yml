@@ -14,10 +14,8 @@ services:
             - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
             - ../db:/var/lib/mysql
             - ../logs/mysql:/var/log/mysql
-        expose:
-            - 3306
-        # ports:
-        #     - 3306:3306
+        ports:
+            - "3306:3306"
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         restart: always

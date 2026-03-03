@@ -10,3 +10,5 @@ imutils
 openai
 jsonschema
 Flask-SQLAlchemy
+python-dotenv
+mysql-connector-python

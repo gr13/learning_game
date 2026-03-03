@@ -14,7 +14,7 @@ class LevelEnum(enum.Enum):
 # initialization: profile = Profile(user_level=LevelEnum.B1)
 
 
-class Profile(db.Model):
+class ProfileModel(db.Model):
     __tablename__ = "profile"
 
     id = db.Column(db.Integer, primary_key=True)
