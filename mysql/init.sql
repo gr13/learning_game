@@ -21,7 +21,7 @@ INTO TABLE core_vocabulary
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
+-- IGNORE 1 ROWS
 (word);
 
 -- ##################################################
@@ -44,7 +44,7 @@ INTO TABLE domain_vocabulary
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
+-- IGNORE 1 ROWS
 (word, domain);
 
 -- ##################################################
@@ -53,18 +53,20 @@ IGNORE 1 ROWS
 
 CREATE TABLE IF NOT EXISTS reading_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    main_task VARCHAR(255) NOT NULL UNIQUE,
+    task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
+    main_task TEXT NOT NULL,
     done TINYINT UNSIGNED DEFAULT 0,
     INDEX idx_done (done)
 );
 
--- LOAD DATA INFILE '/docker-entrypoint-initdb.d/reading_exam.csv'
--- INTO TABLE reading_exam
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 ROWS
--- (main_task);
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/reading_exam.csv'
+IGNORE
+INTO TABLE reading_exam
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(task_level, main_task);
 
 -- ##################################################
 -- writing exam
@@ -72,18 +74,20 @@ CREATE TABLE IF NOT EXISTS reading_exam (
 
 CREATE TABLE IF NOT EXISTS writing_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    main_task VARCHAR(255) NOT NULL UNIQUE,
+    task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
+    main_task TEXT NOT NULL,
     done TINYINT UNSIGNED DEFAULT 0,
     INDEX idx_done (done)
 );
 
--- LOAD DATA INFILE '/docker-entrypoint-initdb.d/writing_exam.csv'
--- INTO TABLE writing_exam
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 ROWS
--- (main_task);
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/writing_exam.csv'
+IGNORE
+INTO TABLE writing_exam
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(task_level, main_task);
 
 -- ##################################################
 -- speaking exam
@@ -91,18 +95,20 @@ CREATE TABLE IF NOT EXISTS writing_exam (
 
 CREATE TABLE IF NOT EXISTS speaking_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    main_task VARCHAR(255) NOT NULL UNIQUE,
+    task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
+    main_task TEXT NOT NULL,
     done TINYINT UNSIGNED DEFAULT 0,
     INDEX idx_done (done)
 );
 
--- LOAD DATA INFILE '/docker-entrypoint-initdb.d/speaking_exam.csv'
--- INTO TABLE speaking_exam
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 ROWS
--- (main_task);
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/speaking_exam.csv'
+IGNORE
+INTO TABLE speaking_exam
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(task_level, main_task);
 
 
 -- ##################################################
