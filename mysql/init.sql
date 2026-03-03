@@ -75,7 +75,7 @@ IGNORE 1 ROWS
 CREATE TABLE IF NOT EXISTS writing_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
-    main_task TEXT NOT NULL,
+    main_task VARCHAR(255) NOT NULL,
     done TINYINT UNSIGNED DEFAULT 0,
     INDEX idx_done (done)
 );
@@ -96,7 +96,7 @@ IGNORE 1 ROWS
 CREATE TABLE IF NOT EXISTS speaking_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
-    main_task TEXT NOT NULL,
+    main_task VARCHAR(255) NOT NULL,
     done TINYINT UNSIGNED DEFAULT 0,
     INDEX idx_done (done)
 );
