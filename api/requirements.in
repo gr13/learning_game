@@ -9,3 +9,4 @@ numpy
 imutils
 openai
 jsonschema
+Flask-SQLAlchemy
