@@ -4,7 +4,7 @@ from app.models.profile import ProfileModel, LevelEnum
 
 class TestProfile:
 
-    def test_profile_json(self, app):
+    def test_profile_json(self, db_session):
         """
         Creates profile model and checks the returned json
         """

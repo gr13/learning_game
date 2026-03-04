@@ -1,9 +1,9 @@
 from app.models.core_vocabulary import CoreVocabularyModel
 
 
-class TestCoreVocabulary():
+class TestCoreVocabulary:
 
-    def test_core_vocabulary_json(self, app):
+    def test_core_vocabulary_json(self, db_session):
         """
         Creates core vocabulary model and checks the returned json
         """
@@ -23,7 +23,7 @@ class TestCoreVocabulary():
         }
         assert saved.json() == expected
 
-    def test_state_transitions(self, app):
+    def test_state_transitions(self, db_session):
 
         model = CoreVocabularyModel(word="haus")
         model.save_to_db()
