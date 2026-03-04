@@ -1,18 +1,18 @@
-from app.models.writing_exam import WritingExamModel
+from app.models.speaking_exam import SpeakingExamModel
 from app.enums import LevelEnum
 
 
-class TestWritingExam:
+class TestSpeakingExam:
 
-    def test_writing_exam_json(self, db_session):
+    def test_speaking_exam_json(self, db_session):
         """
-        Creates writing exam model and checks the returned json
+        Creates speaking exam model and checks the returned json
         """
-        model = WritingExamModel(
+        model = SpeakingExamModel(
             main_task="task_level test", task_level=LevelEnum.A2)
         model.save_to_db()
 
-        saved = WritingExamModel.find_by_id(model.id)
+        saved = SpeakingExamModel.find_by_id(model.id)
         assert saved is not None
 
         expected = {
@@ -24,29 +24,29 @@ class TestWritingExam:
         }
         assert saved.json() == expected
 
-    def test_writing_exam_state_transitions(self, db_session):
+    def test_speaking_exam_state_transitions(self, db_session):
 
-        model = WritingExamModel(
+        model = SpeakingExamModel(
             main_task="task_level test", task_level=LevelEnum.A2)
         model.save_to_db()
 
         model.mark_done()
 
-        saved = WritingExamModel.find_by_id(model.id)
+        saved = SpeakingExamModel.find_by_id(model.id)
 
         assert saved.done is True
         assert saved.dt_done is not None
 
-    def test_riting_exam_find_new(self, db_session):
+    def test_speaking_exam_find_new(self, db_session):
 
-        task1 = WritingExamModel(main_task="task1", task_level=LevelEnum.A2)
-        task2 = WritingExamModel(main_task="task2", task_level=LevelEnum.A2)
+        task1 = SpeakingExamModel(main_task="task1", task_level=LevelEnum.A2)
+        task2 = SpeakingExamModel(main_task="task2", task_level=LevelEnum.A2)
 
         task1.save_to_db()
         task2.save_to_db()
 
         task1.mark_done()
 
-        new_task = WritingExamModel.find_new()
+        new_task = SpeakingExamModel.find_new()
 
         assert new_task.id == task2.id

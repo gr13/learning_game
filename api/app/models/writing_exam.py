@@ -14,7 +14,7 @@ class WritingExamModel(db.Model):
         nullable=False,
         default=LevelEnum.A2
     )
-    main_task = db.Column(db.Text, nullable=False)
+    main_task = db.Column(db.String(255), nullable=False)
     done = db.Column(db.Boolean, nullable=False, default=False)
     dt_done = db.Column(db.DateTime, nullable=True)
 

@@ -38,3 +38,17 @@ class TestCoreVocabulary:
         assert saved.dt_introduced is not None
         assert saved.dt_learned is not None
         assert saved.dt_learned >= saved.dt_introduced
+
+    def test_core_vocabulary_find_new(self, db_session):
+
+        task1 = CoreVocabularyModel(word="task1")
+        task2 = CoreVocabularyModel(word="task2")
+
+        task1.save_to_db()
+        task2.save_to_db()
+
+        task1.mark_introduced()
+
+        new_task = CoreVocabularyModel.find_new()
+
+        assert new_task.id == task2.id
