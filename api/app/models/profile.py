@@ -29,7 +29,7 @@ class ProfileModel(db.Model):
 
     @classmethod
     def find_by_id(cls, _id: int):
-        return cls.query.get(_id)
+        return db.session.get(cls, _id)
 
     @classmethod
     def find_all(cls):

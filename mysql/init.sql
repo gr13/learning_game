@@ -132,19 +132,23 @@ INSERT IGNORE INTO profile (user_level) VALUES ("A2");
 
 
 -- ##################################################
--- training_day
--- one record per day 
+-- training_lesson
+-- one to several records per day per day 
 -- in theory can be several records per day
 -- paceholder, if I do all exercises and deside that
 -- is not anough
+-- not done could be only one
 -- ##################################################
-CREATE TABLE IF NOT EXISTS training_day (
+CREATE TABLE IF NOT EXISTS training_lesson (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
+    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    done BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- ##################################################
 -- modules
+-- several modules per training lesson
 -- several modules at max 5 per training day
 -- ##################################################
 CREATE TABLE IF NOT EXISTS modules (
