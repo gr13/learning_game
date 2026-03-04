@@ -32,12 +32,9 @@ flask==3.1.3
     # via
     #   -r api/requirements.in
     #   flask-cors
-    #   flask-jwt-extended
     #   flask-restful
     #   flask-sqlalchemy
 flask-cors==6.0.2
-    # via -r api/requirements.in
-flask-jwt-extended==4.7.1
     # via -r api/requirements.in
 flask-restful==0.3.10
     # via -r api/requirements.in
@@ -53,8 +50,8 @@ idna==3.11
     # via
     #   anyio
     #   httpx
-imutils==0.5.4
-    # via -r api/requirements.in
+iniconfig==2.3.0
+    # via pytest
 itsdangerous==2.2.0
     # via flask
 jinja2==3.1.6
@@ -74,10 +71,12 @@ mccabe==0.7.0
     # via flake8
 mysql-connector-python==9.6.0
     # via -r api/requirements.in
-numpy==2.4.2
-    # via -r api/requirements.in
 openai==2.24.0
     # via -r api/requirements.in
+packaging==26.0
+    # via pytest
+pluggy==1.6.0
+    # via pytest
 pycodestyle==2.14.0
     # via flake8
 pydantic==2.12.5
@@ -86,8 +85,10 @@ pydantic-core==2.41.5
     # via pydantic
 pyflakes==3.4.0
     # via flake8
-pyjwt==2.11.0
-    # via flask-jwt-extended
+pygments==2.19.2
+    # via pytest
+pytest==9.0.2
+    # via -r api/requirements.in
 python-dotenv==1.2.2
     # via -r api/requirements.in
 pytz==2025.2
@@ -119,10 +120,7 @@ typing-inspection==0.4.2
     # via pydantic
 uwsgi==2.0.31
     # via -r api/requirements.in
-views==0.3
-    # via -r api/requirements.in
 werkzeug==3.1.6
     # via
     #   flask
     #   flask-cors
-    #   flask-jwt-extended

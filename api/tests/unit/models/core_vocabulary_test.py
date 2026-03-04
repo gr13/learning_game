@@ -36,7 +36,7 @@ class CoreVocabularyTest(BaseTest):
             f"{expected}, actual: {actual}")
 
     def test_state_transitions(self):
-    
+
         model = CoreVocabularyModel(word="haus")
         model.save_to_db()
 
