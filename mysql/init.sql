@@ -9,10 +9,10 @@ use learning_db;
 CREATE TABLE IF NOT EXISTS core_vocabulary (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     word VARCHAR(255) NOT NULL UNIQUE,
-    introduced BOOLEAN DEFAULT FALSE,
-    dt_introduced TIMESTAMP NULL,
-    learned BOOLEAN DEFAULT FALSE,
-    dt_learned TIMESTAMP NULL,
+    introduced BOOLEAN NOT NULL DEFAULT FALSE,
+    dt_introduced DATETIME NULL,
+    learned BOOLEAN NOT NULL DEFAULT FALSE,
+    dt_learned DATETIME NULL,
     INDEX idx_introduced (introduced),
     INDEX idx_learned (learned)
 );
@@ -33,13 +33,14 @@ LINES TERMINATED BY '\n'
 CREATE TABLE IF NOT EXISTS domain_vocabulary (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     word VARCHAR(255) NOT NULL UNIQUE,
-    domain VARCHAR(100),
-    introduced BOOLEAN DEFAULT FALSE,
-    dt_introduced TIMESTAMP NULL,
-    learned BOOLEAN DEFAULT FALSE,
-    dt_learned TIMESTAMP NULL,
+    domain VARCHAR(100) NOT NULL,
+    introduced BOOLEAN NOT NULL DEFAULT FALSE,
+    dt_introduced DATETIME NULL,
+    learned BOOLEAN NOT NULL DEFAULT FALSE,
+    dt_learned DATETIME NULL,
     INDEX idx_domain (domain),
-    INDEX idx_introduced (introduced)
+    INDEX idx_introduced (introduced),
+    INDEX idx_learned (learned)
 );
 
 LOAD DATA INFILE "/docker-entrypoint-initdb.d/domain_vocabulary.csv"
@@ -59,7 +60,8 @@ CREATE TABLE IF NOT EXISTS reading_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
     main_task TEXT NOT NULL,
-    done TINYINT UNSIGNED DEFAULT 0,
+    done BOOLEAN NOT NULL DEFAULT FALSE,
+    dt_done DATETIME NULL,
     INDEX idx_done (done)
 );
 
@@ -80,7 +82,8 @@ CREATE TABLE IF NOT EXISTS writing_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
     main_task VARCHAR(255) NOT NULL,
-    done TINYINT UNSIGNED DEFAULT 0,
+    done BOOLEAN NOT NULL DEFAULT FALSE,
+    dt_done DATETIME NULL,
     INDEX idx_done (done)
 );
 
@@ -101,7 +104,8 @@ CREATE TABLE IF NOT EXISTS speaking_exam (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     task_level ENUM("A1","A2","B1","B2","C1") NOT NULL DEFAULT "A2",
     main_task VARCHAR(255) NOT NULL,
-    done TINYINT UNSIGNED DEFAULT 0,
+    done BOOLEAN NOT NULL DEFAULT FALSE,
+    dt_done DATETIME NULL,
     INDEX idx_done (done)
 );
 

@@ -1,5 +1,6 @@
 from typing import Dict
-from app.models.profile import ProfileModel, LevelEnum
+from app.models.profile import ProfileModel
+from app.enums import LevelEnum
 
 
 class TestProfile:

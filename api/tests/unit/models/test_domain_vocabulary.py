@@ -1,21 +1,22 @@
-from app.models.core_vocabulary import CoreVocabularyModel
+from app.models.domain_vocabulary import DomainVocabularyModel
 
 
-class TestCoreVocabulary:
+class TestDomainVocabulary:
 
-    def test_core_vocabulary_json(self, db_session):
+    def test_domain_vocabulary_json(self, db_session):
         """
-        Creates core vocabulary model and checks the returned json
+        Creates domain vocabulary model and checks the returned json
         """
-        model = CoreVocabularyModel(word="test_word")
+        model = DomainVocabularyModel(word="test_word", domain="test_domain")
         model.save_to_db()
 
-        saved = CoreVocabularyModel.find_by_id(model.id)
+        saved = DomainVocabularyModel.find_by_id(model.id)
         assert saved is not None
 
         expected = {
             "id": saved.id,
             "word": saved.word,
+            "domain": saved.domain,
             "introduced": False,
             "dt_introduced": None,
             "learned": False,
@@ -23,15 +24,15 @@ class TestCoreVocabulary:
         }
         assert saved.json() == expected
 
-    def test_core_vocabulary_state_transitions(self, db_session):
+    def test_domain_vocabulary_state_transitions(self, db_session):
 
-        model = CoreVocabularyModel(word="haus")
+        model = DomainVocabularyModel(word="haus", domain="test_domain")
         model.save_to_db()
 
         model.mark_introduced()
         model.mark_learned()
 
-        saved = CoreVocabularyModel.find_by_id(model.id)
+        saved = DomainVocabularyModel.find_by_id(model.id)
 
         assert saved.introduced is True
         assert saved.learned is True

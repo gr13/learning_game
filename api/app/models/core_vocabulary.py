@@ -39,11 +39,11 @@ class CoreVocabularyModel(db.Model):
 
     @classmethod
     def find_introduced(cls):
-        return cls.query.filter_by(introduced=True).all()
+        return cls.query.filter_by(introduced=True).order_by(cls.id).all()
 
     @classmethod
     def find_learned(cls):
-        return cls.query.filter(learned=True).all()
+        return cls.query.filter_by(learned=True).all()
 
     @classmethod
     def find_all(cls):
