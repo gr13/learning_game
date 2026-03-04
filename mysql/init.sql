@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS core_vocabulary (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     word VARCHAR(255) NOT NULL UNIQUE,
     introduced BOOLEAN DEFAULT FALSE,
+    dt_introduced TIMESTAMP NULL,
     learned BOOLEAN DEFAULT FALSE,
+    dt_learned TIMESTAMP NULL,
     INDEX idx_introduced (introduced),
     INDEX idx_learned (learned)
 );
@@ -33,7 +35,9 @@ CREATE TABLE IF NOT EXISTS domain_vocabulary (
     word VARCHAR(255) NOT NULL UNIQUE,
     domain VARCHAR(100),
     introduced BOOLEAN DEFAULT FALSE,
+    dt_introduced TIMESTAMP NULL,
     learned BOOLEAN DEFAULT FALSE,
+    dt_learned TIMESTAMP NULL,
     INDEX idx_domain (domain),
     INDEX idx_introduced (introduced)
 );

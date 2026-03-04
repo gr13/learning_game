@@ -15,7 +15,7 @@ from dotenv import load_dotenv  # noqa:E402
 load_dotenv()
 os.environ["LOG_FILENAME"] = "api.log"
 
-from app import app  # noqa:E402
+from app import create_app  # noqa:E402
 from app.db import db  # noqa:E402
 
 
@@ -30,10 +30,10 @@ class BaseTest(TestCase):
         setUpClass is called with the class as the only argument and must
         be decorated as a classmethod()
         """
-        app.config["SQLALCHEMY_DATABASE_URI"] = BaseTest.SQLALCHEMY_DATABASE_URI  # noqa: E501
-        app.config["DEBUG"] = True
-        with app.app_context():
-            db.init_app(app)
+        cls.app = create_app({
+            "SQLALCHEMY_DATABASE_URI": cls.SQLALCHEMY_DATABASE_URI,
+            "TESTING": True,
+        })
 
     def setUp(self):
         """
@@ -42,10 +42,10 @@ class BaseTest(TestCase):
         any exception raised by this method will be considered an error rather
         than a test failure. The default implementation does nothing.
         """
-        with app.app_context():
-            db.create_all()
-        self.app = app.test_client
-        self.app_context = app.app_context
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
+        self.client = self.app.test_client()
 
     def tearDown(self):
         """
@@ -60,6 +60,6 @@ class BaseTest(TestCase):
         the outcome of the test method. The default implementation does
         nothing.
         """
-        with app.app_context():
-            db.session.remove()
-            db.drop_all()
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
