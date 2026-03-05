@@ -17,6 +17,7 @@ class TestTrainingLesson:
         expected = {
             "id": model.id,
             "user_level": "A2",
+            "modules": [],
             "ts": model.ts.strftime("%d.%m.%Y %H:%M") if model.ts else None,
             "done": False,
         }

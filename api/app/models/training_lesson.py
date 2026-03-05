@@ -2,6 +2,7 @@
 from app.db import db
 from sqlalchemy import Enum
 from app.enums import LevelEnum
+from app.models.modules import ModulesModel # noqa:F401, E261
 
 
 class TrainingLessonModel(db.Model):
@@ -16,9 +17,29 @@ class TrainingLessonModel(db.Model):
     ts = db.Column(db.DateTime, nullable=False, server_default=db.func.now())
     done = db.Column(db.Boolean, nullable=False, default=False)
 
+    # lazy="dynamic" does not create the list of items
+    # unless it is necessary
+    modules = db.relationship(
+        "ModulesModel",
+        back_populates="training_lesson",
+        lazy="selectin"
+    )
+
     def json(self):
         """
         Return json representation of the class
+        """
+        return {
+            "id": self.id,
+            "user_level": self.user_level.value,
+            "modules": [module.json() for module in self.modules] if self.modules else [],  # noqa:E501
+            "ts": self.ts.strftime("%d.%m.%Y %H:%M") if self.ts else None,
+            "done": self.done,
+        }
+
+    def json_safe(self):
+        """
+        Return json safe representation of the class
         """
         return {
             "id": self.id,

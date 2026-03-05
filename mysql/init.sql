@@ -153,8 +153,14 @@ CREATE TABLE IF NOT EXISTS training_lesson (
 -- ##################################################
 CREATE TABLE IF NOT EXISTS modules (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    training_day_id INT UNSIGNED, -- training_day.id
-    module_type TINYINT UNSIGNED DEFAULT 1 -- 1-5
+    training_lesson_id INT UNSIGNED, -- training_day.id
+    module_type ENUM(
+        "CORE",
+        "DOMAIN",
+        "READING",
+        "WRITING",
+        "SPEAKING"
+    ) NOT NULL DEFAULT "CORE"
 );
 
 
