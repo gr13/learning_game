@@ -27,6 +27,7 @@ class TestModules:
             "training_lesson_id": lesson.id,
             "training_lesson": lesson.json_safe(),
             "module_type": "CORE",
+            "done": saved.done,
         }
 
         assert saved.json() == expected
@@ -158,6 +159,7 @@ class TestModules:
             "id": saved.id,
             "training_lesson_id": lesson.id,
             "module_type": "CORE",
+            "done": saved.done,
         }
 
         assert saved.json_safe() == expected
@@ -171,3 +173,109 @@ class TestModules:
 
         with pytest.raises(Exception):
             module.save_to_db()
+
+    def test_modules_mark_done(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        module = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+        module.save_to_db()
+
+        module.mark_done()
+
+        saved = ModulesModel.find_by_id(module.id)
+
+        assert saved.done is True
+
+    def test_modules_find_not_done(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        m1 = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+
+        m2 = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.READING
+        )
+
+        m1.save_to_db()
+        m2.save_to_db()
+
+        m1.mark_done()
+
+        not_done = ModulesModel.find_not_done(lesson.id)
+
+        assert len(not_done) == 1
+        assert not_done[0].id == m2.id
+
+    def test_modules_find_all(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        m1 = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+
+        m2 = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.READING
+        )
+
+        m1.save_to_db()
+        m2.save_to_db()
+
+        modules = ModulesModel.find_all()
+
+        assert len(modules) >= 2
+
+    def test_modules_default_values(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        module = ModulesModel(training_lesson_id=lesson.id)
+
+        module.save_to_db()
+
+        saved = ModulesModel.find_by_id(module.id)
+
+        assert saved.module_type == ModuleTypeEnum.CORE
+        assert saved.done is False
+
+    def test_modules_json_after_done(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        module = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+
+        module.save_to_db()
+        module.mark_done()
+
+        saved = ModulesModel.find_by_id(module.id)
+
+        result = saved.json()
+
+        assert result["done"] is True
+
+    def test_find_by_lesson_empty(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        modules = ModulesModel.find_by_lesson(lesson.id)
+
+        assert modules == []

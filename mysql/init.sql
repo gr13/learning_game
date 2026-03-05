@@ -160,7 +160,9 @@ CREATE TABLE IF NOT EXISTS modules (
         "READING",
         "WRITING",
         "SPEAKING"
-    ) NOT NULL DEFAULT "CORE"
+    ) NOT NULL DEFAULT "CORE",
+    done BOOLEAN NOT NULL DEFAULT FALSE,
+    INDEX idx_training_lesson (training_lesson_id)
 );
 
 
