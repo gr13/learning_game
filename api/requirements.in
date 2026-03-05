@@ -9,3 +9,5 @@ flake8
 uwsgi
 jsonschema
 pytest
+pre-commit
+pytest-cov

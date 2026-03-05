@@ -1,9 +1,15 @@
 import os
+from dotenv import load_dotenv
 import pytest
 from app import create_app
 from app.db import db
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+load_dotenv()
+
+# TODO:
+# Auto-factory for test data (factory_boy)
+# Parallel test execution (pytest-xdist)
 
 SQLALCHEMY_DATABASE_URI = (
     f"mysql+mysqlconnector://{os.environ['MYSQL_USER']}:"
@@ -23,9 +29,10 @@ def app():
     ctx = app.app_context()
     ctx.push()
 
+    db.drop_all()
     db.create_all()
 
-    yield app   # ← test runs here
+    yield app
 
     db.session.remove()
     db.drop_all()
@@ -39,6 +46,8 @@ def db_session(app):
 
     Session = scoped_session(sessionmaker(bind=connection))
     db.session = Session
+
+    db.session.flush()
 
     yield Session
 
