@@ -1,3 +1,4 @@
+import pytest
 from app.models.modules import ModulesModel
 from app.models.training_lesson import TrainingLessonModel
 from app.enums import ModuleTypeEnum, LevelEnum
@@ -57,3 +58,116 @@ class TestModules:
         module = ModulesModel.find_by_id(9999)
 
         assert module is None
+
+    def test_modules_relationship(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        module = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+        module.save_to_db()
+
+        saved = ModulesModel.find_by_id(module.id)
+
+        assert saved.training_lesson.id == lesson.id
+
+    def test_training_lesson_modules_relationship(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        m1 = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+
+        m2 = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.READING
+        )
+
+        m1.save_to_db()
+        m2.save_to_db()
+
+        saved = TrainingLessonModel.find_by_id(lesson.id)
+
+        modules = saved.modules
+
+        assert len(modules) == 2
+
+    def test_modules_enum_value(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        module = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.READING
+        )
+
+        module.save_to_db()
+
+        saved = ModulesModel.find_by_id(module.id)
+
+        assert saved.module_type == ModuleTypeEnum.READING
+
+    def test_find_by_lesson_isolated(self, db_session):
+
+        lesson1 = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson2 = TrainingLessonModel(user_level=LevelEnum.A2)
+
+        lesson1.save_to_db()
+        lesson2.save_to_db()
+
+        m1 = ModulesModel(
+            training_lesson_id=lesson1.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+
+        m2 = ModulesModel(
+            training_lesson_id=lesson2.id,
+            module_type=ModuleTypeEnum.READING
+        )
+
+        m1.save_to_db()
+        m2.save_to_db()
+
+        modules = ModulesModel.find_by_lesson(lesson1.id)
+
+        assert len(modules) == 1
+        assert modules[0].training_lesson_id == lesson1.id
+
+    def test_modules_json_safe(self, db_session):
+
+        lesson = TrainingLessonModel(user_level=LevelEnum.A2)
+        lesson.save_to_db()
+
+        module = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=ModuleTypeEnum.CORE
+        )
+
+        module.save_to_db()
+
+        saved = ModulesModel.find_by_id(module.id)
+
+        expected = {
+            "id": saved.id,
+            "training_lesson_id": lesson.id,
+            "module_type": "CORE",
+        }
+
+        assert saved.json_safe() == expected
+
+    def test_modules_invalid_lesson(self, db_session):
+
+        module = ModulesModel(
+            training_lesson_id=9999,
+            module_type=ModuleTypeEnum.CORE
+        )
+
+        with pytest.raises(Exception):
+            module.save_to_db()
