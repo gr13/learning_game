@@ -30,6 +30,14 @@ class SessionsModel(db.Model):
         lazy="selectin"
     )
 
+    messages = db.relationship(
+        "SessionMessagesModel",
+        back_populates="session",
+        lazy="selectin",
+        order_by="SessionMessagesModel.id",
+        cascade="all, delete-orphan"
+    )
+
     def json(self):
         """
         Return json representation of the class
