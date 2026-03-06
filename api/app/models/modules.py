@@ -2,8 +2,7 @@
 from app.db import db
 from sqlalchemy import Enum
 from app.enums import ModuleTypeEnum
-
-# add module end
+from app.models.sessions import SessionsModel
 
 
 class ModulesModel(db.Model):
@@ -13,7 +12,8 @@ class ModulesModel(db.Model):
     training_lesson_id = db.Column(
         db.Integer,
         db.ForeignKey("training_lesson.id"),
-        nullable=False
+        nullable=False,
+        index=True
     )
 
     training_lesson = db.relationship(
@@ -22,13 +22,26 @@ class ModulesModel(db.Model):
         lazy="selectin",
     )
 
+    sessions = db.relationship(
+        "SessionsModel",
+        back_populates="module",
+        lazy="selectin",
+        order_by=lambda: SessionsModel.id,
+        cascade="all, delete-orphan"
+    )
+
     module_type = db.Column(
         Enum(ModuleTypeEnum, name="module_type_enum"),
         nullable=False,
         default=ModuleTypeEnum.CORE
     )
 
-    done = db.Column(db.Boolean, nullable=False, default=False)
+    done = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        index=True
+    )
 
     def json(self):
         """
@@ -71,6 +84,17 @@ class ModulesModel(db.Model):
             training_lesson_id=lesson_id,
             done=False
         ).all()
+
+    @classmethod
+    def find_by_session_id(cls, session_id: str):
+        from app.models.sessions import SessionsModel
+
+        return (
+            cls.query
+            .join(SessionsModel)
+            .filter(SessionsModel.session_id == session_id)
+            .first()
+        )
 
     # ----------------------------
     # State transitions

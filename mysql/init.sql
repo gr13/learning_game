@@ -162,7 +162,8 @@ CREATE TABLE IF NOT EXISTS modules (
         "SPEAKING"
     ) NOT NULL DEFAULT "CORE",
     done BOOLEAN NOT NULL DEFAULT FALSE,
-    INDEX idx_training_lesson (training_lesson_id)
+    INDEX idx_training_lesson (training_lesson_id),
+    INDEX idx_done (done)
 );
 
 
@@ -174,8 +175,9 @@ CREATE TABLE IF NOT EXISTS modules (
 CREATE TABLE IF NOT EXISTS sessions (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    module_id INT UNSIGNED, -- modules.id
-    session_id CHAR(36) NOT NULL UNIQUE -- str(uuid.uuid4())
+    module_id INT UNSIGNED NOT NULL, -- modules.id
+    session_id CHAR(36) NOT NULL UNIQUE, -- str(uuid.uuid4())
+    INDEX idx_module_id (module_id)
 );
 
 -- ##################################################
