@@ -27,6 +27,9 @@ class ProfileModel(db.Model):
             "preferences": self.preferences,
         }
 
+    # ----------------------------
+    # Queries
+    # ----------------------------
     @classmethod
     def find_by_id(cls, _id: int):
         return db.session.get(cls, _id)
@@ -35,6 +38,12 @@ class ProfileModel(db.Model):
     def find_all(cls):
         return cls.query.all()
 
+    def get_user_level(self):
+        return self.user_level.value
+
+    # ----------------------------
+    # State transitions
+    # ----------------------------
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

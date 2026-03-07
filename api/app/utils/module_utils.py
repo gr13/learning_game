@@ -6,6 +6,7 @@ from app.utils.session_store import SessionStore
 from app.utils.plans import MODULE_1_PLAN
 from app.utils.response_handler import ResponseHandler
 from app.utils.schemas import EXPLANATION_SCHEMA
+from app.models.profile import ProfileModel
 
 MAX_RETRIES = 2
 
@@ -69,12 +70,13 @@ class ModuleUtils:
         """
         Creates session and sends initial explanation request.
         """
+        user = ProfileModel.find_by_id(1)
 
         plan_instance = self._get_module_1_instance()
         runtime_context = {
             "the_new_word": NEW_WORD,
             "practice_list": PRACTICE_LIST,
-            "practice_level": "A2"
+            "practice_level": user.get_user_level(),
         }
         system_plan = json.dumps(
             {"plan": plan_instance, "runtime": runtime_context},
