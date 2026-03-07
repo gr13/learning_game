@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from app.db import db
 from app.resources.helloworld import HelloWorld
-from app.resources.module import Module
+# from app.resources.module import Module
 
 
 def create_app(config: dict | None = None):
@@ -32,6 +32,6 @@ def create_app(config: dict | None = None):
     db.init_app(app)
 
     api.add_resource(HelloWorld, "/")
-    api.add_resource(Module, "/modules/<int:module_id>")
+    # api.add_resource(Module, "/modules/<int:module_id>")
 
     return app
