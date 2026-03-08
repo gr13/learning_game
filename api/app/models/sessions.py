@@ -70,9 +70,22 @@ class SessionsModel(db.Model):
     def find_all(cls):
         return cls.query.all()
 
+    def get_exercise_index(self) -> int:
+        """
+        Return current exercise index.
+        """
+        return self.exercise_index or 0
+
     # ----------------------------
     # State transitions
     # ----------------------------
+    def advance_exercise(self):
+        """
+        Move session to the next exercise step.
+        """
+
+        self.exercise_index = (self.exercise_index or 0) + 1
+        self.save_to_db()
 
     def save_to_db(self):
         db.session.add(self)

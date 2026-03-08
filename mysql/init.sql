@@ -176,6 +176,7 @@ CREATE TABLE IF NOT EXISTS sessions (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     module_id INT UNSIGNED NOT NULL, -- modules.id
+    exercise_index INT DEFAULT 0,
     INDEX idx_module_id (module_id)
 );
 

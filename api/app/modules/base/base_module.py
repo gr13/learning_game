@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict
 
 from app.models.modules import ModulesModel
+from app.models.sessions import SessionsModel
 
 
 class BaseModule(ABC):
@@ -11,7 +12,7 @@ class BaseModule(ABC):
     A module contains exercises and controls their execution.
     """
 
-    def __init__(self, module: ModulesModel, session):
+    def __init__(self, module: ModulesModel, session: SessionsModel):
         self.module = module
         self.session = session
 
@@ -82,9 +83,7 @@ class BaseModule(ABC):
         """
         Return current exercise index.
         """
-
-        if hasattr(self.session, "current_exercise"):
-            return self.session.current_exercise
+        return self.session.exercise_index
 
         return 1
 
@@ -92,9 +91,7 @@ class BaseModule(ABC):
         """
         Move to next exercise.
         """
-
-        if hasattr(self.session, "current_exercise"):
-            self.session.current_exercise += 1
+        self.session.advance_exercise()
 
     # -------------------------------------------------------
     # Plan loading
