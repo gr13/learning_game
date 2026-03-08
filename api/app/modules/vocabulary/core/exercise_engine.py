@@ -8,7 +8,7 @@ from app.modules.shared.exercise_runner import ExerciseRunner
 # exercises
 from .exercises.new_word_drill import NewWordDrill
 from .exercises.repetition_drill import RepetitionDrill
-from .exercises.context_usage_drill import ContextUsage
+from .exercises.context_usage_drill import ContextUsageDrill
 from .exercises.mixed_tense_drill import MixedTenseDrill
 from .exercises.translation_drill import TranslationDrill
 
@@ -29,7 +29,7 @@ class CoreExerciseEngine:
     EXERCISE_MAP: Dict[int, Type[BaseExercise]] = {
         1: NewWordDrill,
         2: RepetitionDrill,
-        3: ContextUsage,
+        3: ContextUsageDrill,
         4: MixedTenseDrill,
         5: TranslationDrill,
     }

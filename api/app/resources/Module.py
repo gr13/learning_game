@@ -1,54 +1,83 @@
-# from flask_restful import Resource
-# from flask import request
-# from api.app.utils.modules.module_utils import ModuleUtils
-# from api.app.utils.sessions.session_store import SessionStore
-# from api.app.utils.monitoring.performance import time_register
+from flask_restful import Resource
+from flask import request
+from app.models.modules import ModulesModel
+from app.modules.engine import ModuleEngine
+from app.sessions.session_store import SessionStore
+from app.monitoring.performance import time_register
+
+# TODO:
+# •	Add response-type detector (JSON vs plain text auto handler)
+# •	Detect JSON vs plain text
+# •	Prevent rendering crashes
+# •	Clean separation of modes
+
+# •	refactor into a PromptBuilder class for cleaner scaling
+# •	Centralized prompt generation
+# •	Clean separation of concerns
+# •	Scalable for Modules 2–5
 
 
-# class Module(Resource):
-#     """ The Module view """
-#     class_id = "Module"
+class Module(Resource):
+    """ The Module view """
+    class_id = "Module"
 
-#     def __init__(self):
-#         self.module_utils = ModuleUtils()
+    def __init__(self):
+        self.module_engine = ModuleEngine()
 
-#     @time_register("Module GET")
-#     def get(self, module_id):
-#         """
-#         initiates the module
-#         """
-#         session_id = SessionStore.create_session(module_id=module_id)
-#         result = self.module_utils.handle_module(module_id, session_id)
-#         result["session_id"] = session_id
-#         return result
+    @time_register("Module GET")
+    def get(self, module_id):
+        """
+        initiates the module
+        """
 
-#     @time_register("Module POST")
-#     def post(self, module_id):
-#         """
-#         extablish countious learning
+        module = ModulesModel.find_by_id(module_id)
 
-#         Expects JSON:
-#         {
-#         "module_id": 1,
-#         "session_id": 123,
-#         "user_input": "Ich gehe zur Schule"
-#         }
-#         """
-#         data = request.get_json()
+        if not module:
+            return {"error": "Module not found"}, 404
 
-#         session_id = data.get("session_id")
-#         user_input = data.get("user_input")
+        session = SessionStore.create_session(module_id=module_id)
+        result = self.module_engine.run_module(
+            module_id=module_id,
+            session_id=session,
+            user_input=None
+        )
+        result["session_id"] = session.session_id
+        return result
 
-#         # Basic validation
-#         if not module_id or not session_id or not user_input:
-#             return {"error": "Missing required fields"}, 400
+    @time_register("Module POST")
+    def post(self, module_id):
+        """
+        extablish countious learning
 
-#         # Route to correct module continuation
-#         if module_id == 1:
-#             result = self.module_utils.continue_module1(
-#                 session_id=session_id,
-#                 user_input=user_input
-#             )
-#             return result
+        Expects JSON:
+        {
+        "module_id": 1,
+        "session_id": 123,
+        "user_input": "Ich gehe zur Schule"
+        }
+        """
+        data = request.get_json()
 
-#         return {"error": "Module not implemented"}, 400
+        session_id = data.get("session_id")
+        user_input = data.get("user_input")
+
+        # Basic validation
+        if not session_id or not user_input:
+            return {"error": "Missing required fields"}, 400
+
+        module = ModulesModel.find_by_id(module_id)
+
+        if not module:
+            return {"error": "Module not found"}, 404
+
+        session = SessionStore.get_session(session_id)
+        if not session:
+            return {"error": "Invalid session"}, 404
+
+        result = self.module_engine.run_module(
+            module=module,
+            session=session,
+            user_input=user_input
+        )
+
+        return result

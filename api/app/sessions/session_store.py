@@ -1,88 +1,88 @@
-import uuid
-# ============================================================
-# IN-MEMORY SESSION STORE (TEMPORARY)
-# ============================================================
+from typing import List
 
-# Structure:
-# {
-#   session_id: {
-#       "module": int,
-#       "messages": list
-#   }
-# }
+from app.models.sessions import SessionsModel
+from app.models.session_messages import SessionMessagesModel
 
 
 class SessionStore:
     """
-    In-memory session storage (temporary).
-    Class-based design.
-    Shared across entire application.
+    Session persistence layer.
+
+    Wraps database models for session handling.
     """
-    _sessions = {}
 
-    @classmethod
-    def create_session(cls, module_id: int):
-        """
-        Creates a new session and returns session_id.
-        """
-        session_id = str(uuid.uuid4())
-
-        cls._sessions[session_id] = {
-            "module": module_id,
-            "messages": []
-        }
-
-        return session_id
-
-    @classmethod
-    def append_message(cls, session_id, role, content):
-        """
-        Appends a message to session history.
-        """
-        cls._sessions[session_id]["messages"].append(
-            {
-                "role": role,
-                "content": content
-            }
-        )
-
-    @classmethod
-    def get_messages(cls, session_id):
-        """
-        Returns message list for given session.
-        """
-        return cls._sessions[session_id]["messages"]
-
-    @classmethod
-    def has_session(cls, session_id):
-        """
-        Optional safety check.
-        """
-        return session_id in cls._sessions
+    # -------------------------------------------------------
+    # Session creation
+    # -------------------------------------------------------
 
     @staticmethod
-    def ensure_exercise_mode(
-            session_id: int,
-            system_prompt: str
-                             ) -> None:
-        """
-        Ensures that the exercise-mode system instruction
-        is added only once to the session.
-        """
+    def create_session(module_id: int) -> SessionsModel:
 
-        messages = SessionStore.get_messages(session_id)
+        session = SessionsModel(module_id=module_id)
+
+        session.save_to_db()
+
+        return session
+
+    # -------------------------------------------------------
+    # Session retrieval
+    # -------------------------------------------------------
+
+    @staticmethod
+    def get_session(session_id: str) -> SessionsModel | None:
+
+        return SessionsModel.find_by_session_id(session_id)
+
+    # -------------------------------------------------------
+    # Message append
+    # -------------------------------------------------------
+
+    @staticmethod
+    def append_message(
+        session_id: int,
+        role: str,
+        content: str,
+        exercise: int = 1,
+    ) -> SessionMessagesModel:
+
+        message = SessionMessagesModel(
+            session_id=session_id,
+            role=role,
+            content=content,
+            current_exercise=exercise,
+        )
+
+        message.save_to_db()
+
+        return message
+
+    # -------------------------------------------------------
+    # Message history
+    # -------------------------------------------------------
+
+    @staticmethod
+    def get_messages(session_id: int) -> List[SessionMessagesModel]:
+
+        return SessionMessagesModel.find_by_session(session_id)
+
+    # -------------------------------------------------------
+    # Exercise mode helper
+    # -------------------------------------------------------
+
+    @staticmethod
+    def ensure_exercise_mode(session_id: int, system_prompt: str) -> None:
+
+        messages = SessionMessagesModel.find_by_session(session_id)
 
         already_set = any(
-            (
-                m["role"] == "system"
-                and "Now continue the exercise" in m["content"]
-            )
+            m.role == "system"
+            and "Now continue the exercise" in m.content
             for m in messages
         )
 
         if not already_set:
             SessionStore.append_message(
-                session_id,
-                "system",
-                system_prompt,
+                session_id=session_id,
+                role="system",
+                content=system_prompt,
             )
