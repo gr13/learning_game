@@ -1,0 +1,91 @@
+{
+    "input": {
+        "the_new_word": "string",
+        "practice_list": [
+            "string"
+        ],
+        "practice_level": "A1 | A2 | B1 | B2 | C1",
+        "strict_json_required": true
+    },
+    "practice_level_constraints": {
+        "instruction": "Before generating explanations, exercises, or feedback, compare complexity with the user's practice_level. Vocabulary may stretch slightly above the level, but grammar structures must stay at the base level.",
+        "allow_slight_vocabulary_stretch": true,
+        "max_vocabulary_exceed": 0.5,
+        "no_grammar_above_base_level": true,
+        "simplify_if_uncertain": true
+    },
+    "difficulty_distribution_model": {
+        "base_level_numeric": {
+            "A1": 1.0,
+            "A2": 2.0,
+            "B1": 3.0,
+            "B2": 4.0,
+            "C1": 5.0
+        },
+        "review_depth_levels": 1,
+        "preferred_difficulty_range": {
+            "offset_min": 0.5,
+            "offset_max": 0.9
+        },
+        "max_forward_stretch_levels": 1.1,
+        "distribution_bias": "upper_band",
+        "stretch_probability": 0.1
+    },
+    "feedback_mode": {
+        "json_only": false,
+        "plain_text_only": true,
+        "correction_style": "natural_teacher",
+        "structured_but_not_robotic": true,
+        "group_by_exercise": true,
+        "correct_each_task": true,
+        "correction_flow": [
+            "state_if_correct",
+            "provide_correct_version_if_needed",
+            "brief_natural_explanation",
+            "optional_micro_example_if_helpful"
+        ],
+        "tone_rules": {
+            "avoid_robotic_numbering_inside_explanations": true,
+            "avoid_repeating_rule_labels": true,
+            "sound_like_human_teacher": true,
+            "avoid_unnecessary_theory": true,
+            "max_sentences_per_error": 4
+        },
+        "respect_practice_level": true,
+        "include_level_label": true,
+        "recommendation_required": true,
+        "recommendation_must_match_exact_option": true,
+        "recommendation_no_extra_text": true,
+        "recommendation_options": [
+            "A – Micro Drill"
+        ],
+        "recommendation_logic": {
+            "offer_micro_drill_only_if_necessary": true,
+            "do_not_offer_if_all_answers_correct": true,
+            "do_not_offer_for_single_minor_error": true,
+            "offer_if_repeated_or_structural_error_detected": true
+        }
+    },
+    "micro_drill": {
+        "json_only": true,
+        "task_min": 3,
+        "task_max": 5,
+        "fix_only_detected_issue": true,
+        "no_new_complex_vocab": true,
+        "no_grammar_above_base_level": true,
+        "schema": {
+            "mode": "micro_drill",
+            "focus": "string",
+            "tasks": [
+                {
+                    "type": "string",
+                    "instruction": "string"
+                }
+            ]
+        }
+    },
+    "general_rules": {
+        "never_mix_json_and_text": true,
+        "respect_practice_level": true
+    }
+}

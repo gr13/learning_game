@@ -1,0 +1,8 @@
+{
+    "exercise": "translation_drill",
+    "tasks_per_exercise": 5,
+    "rules": {
+        "direction": "EN->DE",
+        "respect_practice_level": true
+    }
+}

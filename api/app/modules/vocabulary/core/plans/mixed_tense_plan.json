@@ -1,0 +1,15 @@
+{
+    "exercise": "mixed_tense_drill",
+    "tasks_per_exercise": 5,
+    "rules": {
+        "tenses": [
+            "Präsens",
+            "Präteritum",
+            "Perfekt",
+            "Plusquamperfekt",
+            "Futur I",
+            "Futur II"
+        ],
+        "respect_practice_level": true
+    }
+}

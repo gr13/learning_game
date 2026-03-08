@@ -1,0 +1,20 @@
+{
+    "mode": "closing_command",
+    "command": "show_summary",
+    "plain_text_only": true,
+    "description": "Provide a short teacher-style summary of the learning session.",
+    "rules": {
+        "tone": "natural_teacher",
+        "max_paragraphs": 3,
+        "mention_progress": true,
+        "mention_common_errors": true,
+        "encourage_next_steps": true,
+        "respect_practice_level": true,
+        "use_newline_escape": "\\n"
+    },
+    "structure_guidelines": [
+        "short recap of what was practiced",
+        "mention strongest area",
+        "mention one improvement area"
+    ]
+}

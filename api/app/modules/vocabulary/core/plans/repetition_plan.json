@@ -1,0 +1,20 @@
+{
+    "exercise": "repetition_drill",
+    "tasks_per_exercise": 5,
+    "rules": {
+        "focus_primary": "the_new_word",
+        "reinforce": "practice_list",
+        "no_grammar_above_base_level": true
+    },
+    "exercise_schema": {
+        "mode": "exercise",
+        "exerciseNumber": "integer",
+        "exerciseType": "repetition_drill",
+        "tasks": [
+            {
+                "type": "string",
+                "instruction": "string"
+            }
+        ]
+    }
+}
