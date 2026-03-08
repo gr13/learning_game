@@ -11,12 +11,6 @@ class SessionsModel(db.Model):
         nullable=False,
         server_default=db.func.now()
     )
-    session_id = db.Column(
-        db.String(36),
-        nullable=False,
-        unique=True,
-        index=True
-    )
 
     module_id = db.Column(
         db.Integer,
@@ -47,7 +41,6 @@ class SessionsModel(db.Model):
             "ts": self.ts.strftime("%d.%m.%Y %H:%M"),
             "module_id": self.module_id,
             "module": self.module.json_safe() if self.module else None,
-            "session_id": self.session_id,
         }
 
     def json_safe(self):
@@ -55,7 +48,6 @@ class SessionsModel(db.Model):
             "id": self.id,
             "ts": self.ts.strftime("%d.%m.%Y %H:%M"),
             "module_id": self.module_id,
-            "session_id": self.session_id,
         }
 
     # ----------------------------
@@ -73,10 +65,6 @@ class SessionsModel(db.Model):
             .order_by(cls.id)
             .all()
         )
-
-    @classmethod
-    def find_by_session_id(cls, session_id: str):
-        return cls.query.filter_by(session_id=session_id).first()
 
     @classmethod
     def find_all(cls):

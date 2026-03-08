@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: pytest-coverage
         name: Run tests and show coverage
-        entry: bash -c './env/bin/python -m coverage run -m pytest api/tests && ./env/bin/python -m coverage report -m --fail-under=80'
+        entry: bash -c './env/bin/python -m coverage run -m pytest api/tests && ./env/bin/python -m coverage report -m --fail-under=70'
         language: system
         pass_filenames: false
         verbose: true

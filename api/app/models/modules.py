@@ -85,17 +85,6 @@ class ModulesModel(db.Model):
             done=False
         ).all()
 
-    @classmethod
-    def find_by_session_id(cls, session_id: str):
-        from app.models.sessions import SessionsModel
-
-        return (
-            cls.query
-            .join(SessionsModel)
-            .filter(SessionsModel.session_id == session_id)
-            .first()
-        )
-
     # ----------------------------
     # State transitions
     # ----------------------------

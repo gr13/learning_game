@@ -176,7 +176,6 @@ CREATE TABLE IF NOT EXISTS sessions (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     module_id INT UNSIGNED NOT NULL, -- modules.id
-    session_id CHAR(36) NOT NULL UNIQUE, -- str(uuid.uuid4())
     INDEX idx_module_id (module_id)
 );
 

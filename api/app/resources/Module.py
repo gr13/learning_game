@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from flask import request
+from flask import current_app
 from app.models.modules import ModulesModel
 from app.modules.engine import ModuleEngine
 from app.sessions.session_store import SessionStore
@@ -36,6 +37,9 @@ class Module(Resource):
             return {"error": "Module not found"}, 404
 
         session = SessionStore.create_session(module_id=module_id)
+        current_app.logger.info(
+            f"module_start | module_id={module_id} | session_id={session.id}"  # noqa: E501
+        )
         result = self.module_engine.run_module(
             module_id=module_id,
             session_id=session,
@@ -59,6 +63,9 @@ class Module(Resource):
         data = request.get_json()
 
         session_id = data.get("session_id")
+        current_app.logger.info(
+            f"module_continue | module_id={module_id} | session_id={session_id}"  # noqa: E501
+        )
         user_input = data.get("user_input")
 
         # Basic validation

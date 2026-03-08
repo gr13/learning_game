@@ -1,4 +1,3 @@
-import uuid
 from typing import Dict, Any
 
 from app.models.modules import ModulesModel
@@ -54,7 +53,6 @@ class ModuleInitializer:
 
         session = SessionsModel(
             module_id=self.module.id,
-            session_id=str(uuid.uuid4())
         )
 
         session.save_to_db()

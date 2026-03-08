@@ -31,7 +31,7 @@ class SessionStore:
     @staticmethod
     def get_session(session_id: str) -> SessionsModel | None:
 
-        return SessionsModel.find_by_session_id(session_id)
+        return SessionsModel.find_by_id(session_id)
 
     # -------------------------------------------------------
     # Message append

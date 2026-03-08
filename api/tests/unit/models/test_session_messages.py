@@ -1,4 +1,3 @@
-import uuid
 from app.models.session_messages import SessionMessagesModel
 from app.models.sessions import SessionsModel
 from app.models.modules import ModulesModel
@@ -21,7 +20,6 @@ class TestSessionMessages:
 
         session = SessionsModel(
             module_id=module.id,
-            session_id=str(uuid.uuid4())
         )
         session.save_to_db()
 

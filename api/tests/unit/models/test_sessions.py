@@ -1,4 +1,3 @@
-import uuid
 from app.models.sessions import SessionsModel
 from app.models.modules import ModulesModel
 from app.models.training_lesson import TrainingLessonModel
@@ -23,10 +22,7 @@ class TestSessions:
 
         module = self.create_module()
 
-        session = SessionsModel(
-            module_id=module.id,
-            session_id=str(uuid.uuid4())
-        )
+        session = SessionsModel(module_id=module.id)
         session.save_to_db()
 
         saved = SessionsModel.find_by_id(session.id)
@@ -36,7 +32,6 @@ class TestSessions:
             "ts": session.ts.strftime("%d.%m.%Y %H:%M"),
             "module_id": module.id,
             "module": module.json_safe(),
-            "session_id": session.session_id,
         }
 
         assert saved.json() == expected
@@ -45,10 +40,7 @@ class TestSessions:
 
         module = self.create_module()
 
-        session = SessionsModel(
-            module_id=module.id,
-            session_id=str(uuid.uuid4())
-        )
+        session = SessionsModel(module_id=module.id)
         session.save_to_db()
 
         saved = SessionsModel.find_by_id(session.id)
@@ -57,7 +49,6 @@ class TestSessions:
             "id": session.id,
             "ts": session.ts.strftime("%d.%m.%Y %H:%M"),
             "module_id": module.id,
-            "session_id": session.session_id,
         }
 
         assert saved.json_safe() == expected
@@ -72,15 +63,8 @@ class TestSessions:
 
         module = self.create_module()
 
-        s1 = SessionsModel(
-            module_id=module.id,
-            session_id=str(uuid.uuid4())
-        )
-
-        s2 = SessionsModel(
-            module_id=module.id,
-            session_id=str(uuid.uuid4())
-        )
+        s1 = SessionsModel(module_id=module.id)
+        s2 = SessionsModel(module_id=module.id)
 
         s1.save_to_db()
         s2.save_to_db()
@@ -89,20 +73,13 @@ class TestSessions:
 
         assert len(sessions) == 2
 
-    def test_session_find_by_session_id(self, db_session):
+    def test_session_find_by_id(self, db_session):
 
         module = self.create_module()
-
-        sid = str(uuid.uuid4())
-
-        session = SessionsModel(
-            module_id=module.id,
-            session_id=sid
-        )
-
+        session = SessionsModel(module_id=module.id)
         session.save_to_db()
 
-        saved = SessionsModel.find_by_session_id(sid)
+        saved = SessionsModel.find_by_id(session.id)
 
         assert saved.id == session.id
 
@@ -110,11 +87,7 @@ class TestSessions:
 
         module = self.create_module()
 
-        session = SessionsModel(
-            module_id=module.id,
-            session_id=str(uuid.uuid4())
-        )
-
+        session = SessionsModel(module_id=module.id)
         session.save_to_db()
 
         saved = SessionsModel.find_by_id(session.id)
