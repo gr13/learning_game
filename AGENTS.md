@@ -60,6 +60,9 @@ Treat stability and contract consistency as priority over adding features.
 2. Prefer typed signatures and predictable return shapes (`dict` schemas).
 3. No silent fallback behavior for invalid module types or unknown exercise indexes.
 4. Do not mix archived code into active execution paths.
+5. Respect flake8 requirements for all new and updated code.
+6. Before finalizing code changes, run flake8 on changed scope when available.
+7. Do not suppress flake8 errors (`# noqa`) without explicit user approval.
 
 ## Testing Rules
 1. Add/adjust tests for every behavioral change.
@@ -110,3 +113,4 @@ When proposing changes:
 - 09.03.2026 08:14 version 0.0004 added versioning policy and changelog format
 - 09.03.2026 08:17 version 0.0005 added update mode on/off logic, create allowed, delete by suggestion only
 - 09.03.2026 10:01 version 0.0006 replaced edit policy with always-read access + explicit write permission model
+- 09.03.2026 14:57 version 0.0007 added mandatory flake8 compliance rules

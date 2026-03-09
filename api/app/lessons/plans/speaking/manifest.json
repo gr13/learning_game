@@ -1,0 +1,5 @@
+{
+  "general": "general_plan.json",
+  "exam": "exam_plan.json",
+  "closing": "closing_plan.json"
+}

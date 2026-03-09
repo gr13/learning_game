@@ -1,6 +1,6 @@
 import os
 from openai import OpenAI
-from api.app.utils.monitoring.performance import time_register
+from app.monitoring.performance import time_register
 
 
 class ChatGPT:

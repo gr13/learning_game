@@ -1,0 +1,10 @@
+{
+  "general": "general_plan.json",
+  "intro": "word_intro_plan.json",
+  "new_word": "new_word_plan.json",
+  "repetition": "repetition_plan.json",
+  "context": "context_plan.json",
+  "mixed_tense": "mixed_tense_plan.json",
+  "translation": "translation_plan.json",
+  "closing": "closing_plan.json"
+}

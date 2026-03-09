@@ -1,0 +1,13 @@
+{
+  "mode": "teacher_runtime",
+  "language": "de",
+  "lesson_scope": "speaking_exam",
+  "task_structure": {
+    "exercises": 1,
+    "tasks_per_exercise": 5
+  },
+  "response_rules": {
+    "structured_mode": "json",
+    "feedback_mode": "text_or_json"
+  }
+}

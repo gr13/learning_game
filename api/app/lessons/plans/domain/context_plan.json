@@ -1,0 +1,8 @@
+{
+    "exercise": "context_usage",
+    "tasks_per_exercise": 5,
+    "rules": {
+        "sentence_generation": true,
+        "respect_practice_level": true
+    }
+}

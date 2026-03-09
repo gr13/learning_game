@@ -5,7 +5,7 @@ from flask_restful import Api
 
 from app.db import db
 from app.resources.helloworld import HelloWorld
-# from app.resources.module import Module
+from app.resources.module import Module
 from app.monitoring.logging import configure_logging
 from app.monitoring.request_logger import register_request_logging
 
@@ -94,7 +94,7 @@ def create_app(config: dict | None = None):
     # Routes
     # ------------------------------------------------
     api.add_resource(HelloWorld, "/")
-    # api.add_resource(Module, "/modules/<int:module_id>")
+    api.add_resource(Module, "/modules/<int:module_id>")
 
     # ------------------------------------------------
     # Request logging

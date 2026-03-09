@@ -1,0 +1,36 @@
+{
+    "mode": "explanation",
+    "description": "Introduce the new vocabulary word before exercises begin.",
+    "input_variables": [
+        "the_new_word",
+        "practice_level"
+    ],
+    "json_only": true,
+    "rules": {
+        "examples_min": 2,
+        "examples_max": 5,
+        "respect_practice_level": true,
+        "complete_forms_required": true,
+        "no_extra_keys": true,
+        "no_missing_keys": true
+    },
+    "response_schema": {
+        "mode": "explanation",
+        "word": "string",
+        "partOfSpeech": "string",
+        "pronunciation": "string",
+        "definition": "string",
+        "meaning": "string",
+        "examples": [
+            {
+                "de": "string",
+                "en": "string"
+            }
+        ],
+        "forms": {
+            "praesens": "string",
+            "praeteritum": "string",
+            "perfekt": "string"
+        }
+    }
+}

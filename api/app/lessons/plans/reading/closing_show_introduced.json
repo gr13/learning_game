@@ -1,0 +1,17 @@
+{
+    "mode": "closing_command",
+    "command": "show_introduced",
+    "json_only": true,
+    "description": "Return all words introduced during the module session.",
+    "schema": {
+        "words": [
+            "string"
+        ]
+    },
+    "rules": {
+        "return_only_words_from_session": true,
+        "no_duplicates": true,
+        "no_extra_keys": true,
+        "no_missing_keys": true
+    }
+}
