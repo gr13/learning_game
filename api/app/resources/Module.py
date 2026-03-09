@@ -86,5 +86,4 @@ class Module(Resource):
             session=session,
             user_input=user_input
         )
-
         return result

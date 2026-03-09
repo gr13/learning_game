@@ -88,7 +88,7 @@ class ModuleEngine:
 
         if not module.done and self.is_module_completed(module):
             self.mark_module_completed(module)
-            self.finalize_module(module)
+            self.finalize_module(module, session)
 
         return result
 
@@ -129,14 +129,17 @@ class ModuleEngine:
 
         return initializer.initialize()
 
-    def finalize_module(self, module: ModulesModel):
+    def finalize_module(
+            self,
+            module: ModulesModel,
+            session: SessionsModel):
         """
         Run module finalization logic.
         """
 
         from app.modules.lifecycle.module_finalizer import ModuleFinalizer
 
-        finalizer = ModuleFinalizer(module)
+        finalizer = ModuleFinalizer(module, session)
         return finalizer.finalize()
 
     # -------------------------------------------------------
@@ -146,12 +149,12 @@ class ModuleEngine:
         """
         Determine if module is completed.
         """
-
         return module.done
 
-    def mark_module_completed(self, module: ModulesModel):
+    def mark_module_completed(
+            self, module: ModulesModel, session: SessionsModel
+            ):
         """
         Mark module as completed.
         """
-
         module.mark_done()
