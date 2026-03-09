@@ -101,7 +101,6 @@ class VocabularyTemplate(BaseModule):
         """
         Build vocabulary module context.
         """
-        # TODO: check value
         return {
             "module_id": self.module.id,
             "module_type": self.module.module_type.value,

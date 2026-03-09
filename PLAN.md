@@ -60,3 +60,13 @@ Run these checks repeatedly during development:
 - Centralized prompt generation.
 - Clean separation of concerns across module/exercise layers.
 - Scalable module architecture for Modules 2–5.
+
+## Imported TODOs (From Archive Notes)
+- Add response-type detector (JSON vs plain text auto handler).
+- Detect JSON vs plain text.
+- Prevent rendering crashes.
+- Clean separation of modes.
+- Refactor into a `PromptBuilder` class for cleaner scaling.
+- Centralized prompt generation.
+- Clean separation of concerns.
+- Scalable for Modules 2–5.

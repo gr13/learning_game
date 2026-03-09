@@ -1,4 +1,4 @@
-from app.modules.base.base_vocabulary_exercise import BaseVocabularyExercise
+from app._arhive.base.base_vocabulary_exercise import BaseVocabularyExercise
 
 
 class RepetitionDrill(BaseVocabularyExercise):
