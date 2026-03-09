@@ -41,8 +41,8 @@ class Module(Resource):
             f"module_start | module_id={module_id} | session_id={session.id}"  # noqa: E501
         )
         result = self.module_engine.run_module(
-            module_id=module_id,
-            session_id=session,
+            module=module,
+            session=session,
             user_input=None
         )
         result["session_id"] = session.session_id
