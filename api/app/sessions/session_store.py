@@ -29,7 +29,7 @@ class SessionStore:
     # -------------------------------------------------------
 
     @staticmethod
-    def get_session(session_id: str) -> SessionsModel | None:
+    def get_session(session_id: int) -> SessionsModel | None:
 
         return SessionsModel.find_by_id(session_id)
 

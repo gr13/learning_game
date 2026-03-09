@@ -37,11 +37,7 @@ class ModuleAnalyzer:
         """
         Return current exercise number.
         """
-
-        if hasattr(self.session, "current_exercise"):
-            return self.session.current_exercise
-
-        return 1
+        return self.session.get_current_exercise()
 
     def get_total_exercises(self) -> int:
         """

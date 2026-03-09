@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict
+from app.models.modules import ModulesModel
+from app.models.sessions import SessionsModel
 
 
 class BaseExercise(ABC):
@@ -10,7 +12,7 @@ class BaseExercise(ABC):
     exercise_engine can execute them generically.
     """
 
-    def __init__(self, module, session):
+    def __init__(self, module: ModulesModel, session: SessionsModel):
         self.module = module
         self.session = session
 
@@ -81,14 +83,10 @@ class BaseExercise(ABC):
         """
         Advance exercise pointer in session.
         """
-
-        if hasattr(self.session, "current_exercise"):
-            self.session.current_exercise += 1
+        self.session.advance_exercise()
 
     def complete_module(self) -> None:
         """
         Mark module as completed.
         """
-
-        if hasattr(self.module, "mark_done"):
-            self.module.mark_done()
+        self.module.mark_done()

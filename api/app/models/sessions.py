@@ -32,6 +32,8 @@ class SessionsModel(db.Model):
         cascade="all, delete-orphan"
     )
 
+    exercise_index = db.Column(db.Integer, nullable=False, default=0)
+
     def json(self):
         """
         Return json representation of the class
@@ -70,11 +72,11 @@ class SessionsModel(db.Model):
     def find_all(cls):
         return cls.query.all()
 
-    def get_exercise_index(self) -> int:
+    def get_current_exercise(self) -> int:
         """
         Return current exercise index.
         """
-        return self.exercise_index or 0
+        return self.exercise_index
 
     # ----------------------------
     # State transitions
@@ -83,8 +85,7 @@ class SessionsModel(db.Model):
         """
         Move session to the next exercise step.
         """
-
-        self.exercise_index = (self.exercise_index or 0) + 1
+        self.exercise_index += 1
         self.save_to_db()
 
     def save_to_db(self):

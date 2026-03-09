@@ -62,7 +62,7 @@ class ModuleInitializer:
     # -------------------------------------------------------
     # User context
     # -------------------------------------------------------
-    def get_user_level(self):
+    def get_user_level(self) -> str | None:
         """
         Retrieve user practice level.
         """

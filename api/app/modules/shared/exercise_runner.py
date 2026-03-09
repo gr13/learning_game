@@ -53,19 +53,13 @@ class ExerciseRunner:
         """
         Return current exercise index.
         """
-
-        if hasattr(self.session, "current_exercise"):
-            return self.session.current_exercise
-
-        return 1
+        return self.session.get_current_exercise()
 
     def advance_exercise(self) -> None:
         """
         Move to next exercise.
         """
-
-        if hasattr(self.session, "current_exercise"):
-            self.session.current_exercise += 1
+        self.session.advance_exercise()
 
     # -------------------------------------------------------
     # Debug / monitoring

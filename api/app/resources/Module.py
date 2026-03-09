@@ -45,7 +45,7 @@ class Module(Resource):
             session=session,
             user_input=None
         )
-        result["session_id"] = session.session_id
+        result["session_id"] = session.id
         return result
 
     @time_register("Module POST")

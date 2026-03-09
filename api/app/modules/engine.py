@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from app.models.modules import ModulesModel
 from app.enums import ModuleTypeEnum
+from app.models.sessions import SessionsModel
 
 # module engines
 from app.modules.vocabulary.core.engine import run as run_core
@@ -34,7 +35,10 @@ class ModuleEngine:
     # Public API
     # -------------------------------------------------------
     def run_module(
-            self, module: ModulesModel, session, user_input: str | None = None
+            self,
+            module: ModulesModel,
+            session: SessionsModel,
+            user_input: str | None = None
             ) -> Dict[str, Any]:
         """
         Execute a learning module.

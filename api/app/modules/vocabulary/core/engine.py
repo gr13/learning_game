@@ -3,6 +3,9 @@ from typing import Dict, Any
 from app.modules.templates.vocabulary_template import VocabularyTemplate
 from app.modules.vocabulary.core.exercise_engine import CoreExerciseEngine
 
+from app.models.modules import ModulesModel
+from app.models.sessions import SessionsModel
+
 
 class CoreVocabularyModule(VocabularyTemplate):
     """
@@ -21,7 +24,11 @@ class CoreVocabularyModule(VocabularyTemplate):
     # -------------------------------------------------------
     # Entry point used by ModuleEngine
     # -------------------------------------------------------
-    def run(module, session, user_input: str | None = None) -> Dict[str, Any]:
+    def run(
+            module: ModulesModel,
+            session: SessionsModel,
+            user_input: str | None = None
+            ) -> Dict[str, Any]:
         """
         Entry point called from ModuleEngine.
         """
@@ -103,7 +110,11 @@ class CoreVocabularyModule(VocabularyTemplate):
 # -------------------------------------------------------
 # Public engine function used by ModuleEngine
 # -------------------------------------------------------
-def run(module, session, user_input: str | None = None) -> Dict[str, Any]:
+def run(
+        module: ModulesModel,
+        session: SessionsModel,
+        user_input: str | None = None
+        ) -> Dict[str, Any]:
     """
     Public module runner.
 

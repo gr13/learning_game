@@ -186,10 +186,11 @@ CREATE TABLE IF NOT EXISTS sessions (
 -- ##################################################
 CREATE TABLE IF NOT EXISTS session_messages (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    session_db_id INT UNSIGNED, -- sessions.id
+    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    session_id INT UNSIGNED NOT NULL, -- sessions.id
     current_exercise TINYINT UNSIGNED DEFAULT 1, -- 1-5
-    status ENUM("assistant", "error", "system", "user", "correction", "summary") DEFAULT "system", -- (system / user)
+    role ENUM("assistant", "error", "system", "user", "correction", "summary") NOT NULL DEFAULT "system", -- (system / user)
     content TEXT NOT NULL,
-    INDEX idx_session_db_id (session_db_id)
+    INDEX idx_session_id (session_id)
 );
 
