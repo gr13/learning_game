@@ -166,6 +166,20 @@ CREATE TABLE IF NOT EXISTS modules (
     INDEX idx_done (done)
 );
 
+-- ##################################################
+-- exercises
+-- one session per exercise / 5 exercises per module
+-- or 1 big exercise for writing, reading, speaking
+-- ##################################################
+CREATE TABLE IF NOT EXISTS exercises (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    module_id INT UNSIGNED NOT NULL, -- modules.id
+    session_id INT UNSIGNED NOT NULL, -- session.id
+    exercise_index INT DEFAULT 0,
+    INDEX idx_module_id (module_id)
+);
+
 
 -- ##################################################
 -- sessions
@@ -175,8 +189,7 @@ CREATE TABLE IF NOT EXISTS modules (
 CREATE TABLE IF NOT EXISTS sessions (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    module_id INT UNSIGNED NOT NULL, -- modules.id
-    exercise_index INT DEFAULT 0,
+    module_id INT UNSIGNED, -- modules.id
     INDEX idx_module_id (module_id)
 );
 
@@ -188,7 +201,6 @@ CREATE TABLE IF NOT EXISTS session_messages (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     session_id INT UNSIGNED NOT NULL, -- sessions.id
-    current_exercise TINYINT UNSIGNED DEFAULT 1, -- 1-5
     role ENUM("assistant", "error", "system", "user", "correction", "summary") NOT NULL DEFAULT "system", -- (system / user)
     content TEXT NOT NULL,
     INDEX idx_session_id (session_id)

@@ -1,8 +1,6 @@
-# import logging
 from app.db import db
 from sqlalchemy import Enum
 from app.enums import LevelEnum
-from app.models.modules import ModulesModel # noqa:F401, E261
 
 
 class TrainingLessonModel(db.Model):

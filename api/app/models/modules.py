@@ -12,7 +12,7 @@ class ModulesModel(db.Model):
     training_lesson_id = db.Column(
         db.Integer,
         db.ForeignKey("training_lesson.id"),
-        nullable=False,
+        nullable=True,
         index=True
     )
 
@@ -41,6 +41,14 @@ class ModulesModel(db.Model):
         nullable=False,
         default=False,
         index=True
+    )
+
+    exercises = db.relationship(
+        "ExercisesModel",
+        back_populates="module",
+        lazy="selectin",
+        order_by="ExercisesModel.id",
+        cascade="all, delete-orphan",
     )
 
     def json(self):
@@ -85,6 +93,10 @@ class ModulesModel(db.Model):
             done=False
         ).all()
 
+    @classmethod
+    def get_module_type(cls) -> str:
+        return cls.module_type
+
     # ----------------------------
     # State transitions
     # ----------------------------
@@ -95,3 +107,19 @@ class ModulesModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
+    # ----------------------------
+    # static
+    # ----------------------------
+    @staticmethod
+    def module_type_from_module_id(
+        module_id: int
+    ) -> ModuleTypeEnum | None:
+        mapping = {
+            1: ModuleTypeEnum.CORE,
+            2: ModuleTypeEnum.DOMAIN,
+            3: ModuleTypeEnum.READING,
+            4: ModuleTypeEnum.WRITING,
+            5: ModuleTypeEnum.SPEAKING,
+        }
+        return mapping.get(module_id)

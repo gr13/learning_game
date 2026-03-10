@@ -3,6 +3,8 @@ from flask import request
 from flask import current_app
 from app.models.modules import ModulesModel
 from app.lessons.engine import LessonEngine
+from app.models.training_lesson import TrainingLessonModel
+from app.enums import LevelEnum
 from app.sessions.session_store import SessionStore
 from app.monitoring.performance import time_register
 
@@ -26,20 +28,63 @@ class Module(Resource):
         self.module_engine = LessonEngine()
 
     @time_register("Module GET")
-    def get(self, module_id):
+    def get(self, module_type_id):
         """
         initiates the module
         """
+        session_id = request.args.get("session_id", type=int)
+        if session_id:  # training day exists: e.g. module 2
+            session = SessionStore.get_session(session_id)
+            if not session:
+                return {"mode": "error", "message": "Invalid session"}, 404
 
-        module = ModulesModel.find_by_id(module_id)
+            if not session.module_id:
+                return {
+                    "mode": "error",
+                    "message": "Session has no module_id"}, 400
 
-        if not module:
-            return {"error": "Module not found"}, 404
+            module = ModulesModel.find_by_id(session.module_id)
+            if not module:
+                return {"mode": "error", "message": "Module not found"}, 404
 
-        session = SessionStore.create_session(module_id=module_id)
+        else:  # new training day
+            # create session
+            session = SessionStore.create_session()
+            # create lesson
+            # TODO: create correctly with proper Level
+            lesson = TrainingLessonModel(
+                user_level=LevelEnum.A2)
+            lesson.save_to_db()
+            # create module
+            requested_type = ModulesModel.module_type_from_module_id(
+                module_type_id)
+            if requested_type is None:
+                return {
+                    "mode": "error",
+                    "message": f"Unsupported module_type_id: {module_type_id}",
+                }, 400
+
+            module_type = ModulesModel.module_type_from_module_id(
+                module_id=module_type_id
+            )
+            if module_type is None:
+                return {
+                    "mode": "error",
+                    "message": f"Unsupported module_type_id: {module_type_id}",
+                }, 400
+
+            module = ModulesModel(
+                training_lesson_id=lesson.id,
+                module_type=module_type,
+                done=False
+            )
+            module.save_to_db()
+            session.set_module_id(module.id)
+
         current_app.logger.info(
-            f"module_start | module_id={module_id} | session_id={session.id}"  # noqa: E501
+            f"module_start | module_type_id={module_type_id} | session_id={session.id}"  # noqa: E501
         )
+
         result = self.module_engine.run_module(
             module=module,
             session=session,
@@ -49,13 +94,13 @@ class Module(Resource):
         return result
 
     @time_register("Module POST")
-    def post(self, module_id):
+    def post(self, module_type_id):
         """
         extablish countious learning
 
         Expects JSON:
         {
-        "module_id": 1,
+        "module_type_id": 1,
         "session_id": 123,
         "user_input": "Ich gehe zur Schule"
         }
@@ -64,7 +109,7 @@ class Module(Resource):
 
         session_id = data.get("session_id")
         current_app.logger.info(
-            f"module_continue | module_id={module_id} | session_id={session_id}"  # noqa: E501
+            f"module_continue | module_type_id={module_type_id} | session_id={session_id}"  # noqa: E501
         )
         user_input = data.get("user_input")
 
@@ -72,7 +117,7 @@ class Module(Resource):
         if not session_id or not user_input:
             return {"error": "Missing required fields"}, 400
 
-        module = ModulesModel.find_by_id(module_id)
+        module = ModulesModel.find_by_id(module_type_id)
 
         if not module:
             return {"error": "Module not found"}, 404

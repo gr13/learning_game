@@ -16,7 +16,7 @@ class SessionStore:
     # -------------------------------------------------------
 
     @staticmethod
-    def create_session(module_id: int) -> SessionsModel:
+    def create_session(module_id: int = None) -> SessionsModel:
 
         session = SessionsModel(module_id=module_id)
 

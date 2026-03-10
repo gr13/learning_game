@@ -9,6 +9,7 @@ services:
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - MYSQL_DATABASE=${DATABASE_NAME}
             - MYSQL_ALLOW_EMPTY_PASSWORD=no
+            - MYSQL_HOST=mysql
         volumes:
             - ./mysql:/docker-entrypoint-initdb.d
             - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
@@ -39,6 +40,10 @@ services:
             - DEBUG=1
             - OPENAI_API_KEY=${OPENAI_API_KEY}
             - OPENAI_MODEL=gpt-5-mini
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - DATABASE_NAME=${DATABASE_NAME}
+            - MYSQL_HOST=db
         expose:
             - 9000
 

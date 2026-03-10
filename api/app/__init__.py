@@ -8,10 +8,13 @@ from app.resources.helloworld import HelloWorld
 from app.resources.module import Module
 from app.monitoring.logging import configure_logging
 from app.monitoring.request_logger import register_request_logging
+from app.models.exercises import ExercisesModel  # noqa: F401
+
+
+import app.models as app_models  # noqa: F401
 
 
 def create_app(config: dict | None = None):
-
     app = Flask(__name__)
 
     # ------------------------------------------------
@@ -94,7 +97,7 @@ def create_app(config: dict | None = None):
     # Routes
     # ------------------------------------------------
     api.add_resource(HelloWorld, "/")
-    api.add_resource(Module, "/modules/<int:module_id>")
+    api.add_resource(Module, "/modules/<int:module_type_id>")
 
     # ------------------------------------------------
     # Request logging

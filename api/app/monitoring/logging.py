@@ -2,7 +2,7 @@ from flask import Flask
 import logging
 from pathlib import Path
 
-LOG_FILENAME = "logs/api.log"
+LOG_FILENAME = "../logs/api.log"
 
 
 def configure_logging(app: Flask):
