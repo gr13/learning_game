@@ -27,9 +27,13 @@ class EndModule(Resource):
         if not module:
             return {"mode": "error", "message": "Module not found"}, 404
 
+        module_type_id = ModulesModel.module_id_from_module_type(
+            module.module_type)
+        if module_type_id is None:
+            return {"mode": "error", "message": "Unsupported module type"}, 400
+
         return self.module_engine.end_module(
-                module_type_id=ModulesModel.module_id_from_module_type(
-                    module.module_type),
+                module_type_id=module_type_id,
                 module=module,
                 session=session,
             )
