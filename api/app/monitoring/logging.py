@@ -20,10 +20,9 @@ def configure_logging(app: Flask):
     try:
         log_path = Path(LOG_FILENAME)
         log_path.parent.mkdir(parents=True, exist_ok=True)
-
         handler = logging.FileHandler(LOG_FILENAME)
     except OSError:
-        log_path = Path(LOG_FILENAME)
+        log_path = Path("logs/api.log")
         log_path.parent.mkdir(parents=True, exist_ok=True)
         handler = logging.FileHandler(log_path)
 
