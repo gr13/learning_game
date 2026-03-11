@@ -102,24 +102,24 @@ class Module(Resource):
         Expects JSON:
         {
             "session_id": 123,
-            "button": "answer" | "next_exercise" | "end_module",
-            "user_input": "..."   # required only when button == "answer"
+            "user_input": "Ich gehe zur Schule"
         }
         """
         data = request.get_json(silent=True) or {}
 
         session_id = data.get("session_id")
-        button = data.get("button", "answer")
-        user_input = data.get("user_input")
+        raw_user_input = data.get("user_input")
+        user_input = raw_user_input if isinstance(raw_user_input, str) else ""
+        user_input = user_input.strip()
 
-        current_app.logger.info(
-            f"module_continue | module_type_id={module_type_id} | session_id={session_id}"  # noqa: E501
-        )
+        # current_app.logger.info(
+        #     f"module_continue | module_type_id={module_type_id} | session_id={session_id}"  # noqa: E501
+        # )
 
         if not session_id:
             return {"mode": "error", "message": "Missing session_id"}, 400
 
-        if button == "answer" and not user_input:
+        if not user_input:
             return {"mode": "error", "message": "Missing user_input"}, 400
 
         session = SessionStore.get_session(session_id)
@@ -132,7 +132,6 @@ class Module(Resource):
             }, 400
 
         module = ModulesModel.find_by_id(session.module_id)
-
         if not module:
             return {"mode": "error", "message": "Module not found"}, 404
 
@@ -146,26 +145,6 @@ class Module(Resource):
         current_app.logger.info(
             f"module_continue | module_type_id={module_type_id} | session_id={session_id}",  # noqa: E501
         )
-
-        if button == "next_exercise":
-            return self.module_engine.next_exercise(
-                module_type_id=module_type_id,
-                module=module,
-                session=session,
-            )
-
-        if button == "end_module":
-            return self.module_engine.end_module(
-                module_type_id=module_type_id,
-                module=module,
-                session=session,
-            )
-
-        if button != "answer":
-            return {
-                "mode": "error",
-                "message": f"Unsupported button: {button}"
-            }, 400
 
         return self.module_engine.answer(
                 module_type_id=module_type_id,

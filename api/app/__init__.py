@@ -32,7 +32,6 @@ def create_app(config: dict | None = None):
     # ------------------------------------------------
     if config:
         app.config.update(config)
-        configure_logging(app)
     else:
         user = os.environ.get("MYSQL_USER")
         password = os.environ.get("MYSQL_ROOT_PASSWORD")
@@ -87,6 +86,8 @@ def create_app(config: dict | None = None):
         #     f"{os.environ.get('DATABASE_NAME')}"
         # )
 
+    configure_logging(app)
+
     # ------------------------------------------------
     # Extensions
     # ------------------------------------------------
@@ -100,9 +101,9 @@ def create_app(config: dict | None = None):
     api.add_resource(HelloWorld, "/")
     api.add_resource(Module, "/modules/<int:module_type_id>")
     api.add_resource(
-        NextExercise, "/modules/<int:module_type_id>/next-exercise"
+        NextExercise, "/modules/next-exercise"
     )
-    api.add_resource(EndModule, "/modules/<int:module_type_id>/end-module")
+    api.add_resource(EndModule, "/modules/end-module")
 
     # ------------------------------------------------
     # Request logging

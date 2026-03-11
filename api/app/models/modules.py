@@ -123,3 +123,16 @@ class ModulesModel(db.Model):
             5: ModuleTypeEnum.SPEAKING,
         }
         return mapping.get(module_id)
+
+    @staticmethod
+    def module_id_from_module_type(
+        module_type: int
+    ) -> ModuleTypeEnum | None:
+        mapping = {
+            ModuleTypeEnum.CORE: 1,
+            ModuleTypeEnum.DOMAIN: 2,
+            ModuleTypeEnum.READING: 3,
+            ModuleTypeEnum.WRITING: 4,
+            ModuleTypeEnum.SPEAKING: 5,
+        }
+        return mapping.get(module_type)
