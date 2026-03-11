@@ -19,6 +19,10 @@ class NextExercise(Resource):
         if not session:
             return {"mode": "error", "message": "Invalid session"}, 404
 
+        if not session.module_id:
+            return {
+                "mode": "error", "message": "Session has no module_id"}, 400
+
         module = ModulesModel.find_by_id(session.module_id)
         if not module:
             return {"mode": "error", "message": "Module not found"}, 404

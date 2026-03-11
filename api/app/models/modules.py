@@ -126,8 +126,8 @@ class ModulesModel(db.Model):
 
     @staticmethod
     def module_id_from_module_type(
-        module_type: int
-    ) -> ModuleTypeEnum | None:
+        module_type: ModuleTypeEnum
+    ) -> int | None:
         mapping = {
             ModuleTypeEnum.CORE: 1,
             ModuleTypeEnum.DOMAIN: 2,
