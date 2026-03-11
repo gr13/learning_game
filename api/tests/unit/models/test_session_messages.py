@@ -33,7 +33,6 @@ class TestSessionMessages:
             session_id=session.id,
             role="user",
             content="Hallo",
-            current_exercise=1
         )
 
         message.save_to_db()
@@ -46,7 +45,6 @@ class TestSessionMessages:
             "session_id": session.id,
             "role": "user",
             "content": "Hallo",
-            "current_exercise": 1,
         }
 
         assert saved.json() == expected

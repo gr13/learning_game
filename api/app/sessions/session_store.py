@@ -42,14 +42,12 @@ class SessionStore:
         session_id: int,
         role: str,
         content: str,
-        exercise: int = 1,
     ) -> SessionMessagesModel:
 
         message = SessionMessagesModel(
             session_id=session_id,
             role=role,
             content=content,
-            current_exercise=exercise,
         )
 
         message.save_to_db()

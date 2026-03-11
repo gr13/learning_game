@@ -26,12 +26,6 @@ class SessionMessagesModel(db.Model):
         lazy="selectin"
     )
 
-    current_exercise = db.Column(
-        db.Integer,
-        nullable=False,
-        default=1
-    )
-
     role = db.Column(
         Enum(
             "assistant",
@@ -58,7 +52,6 @@ class SessionMessagesModel(db.Model):
             "session_id": self.session_id,
             "role": self.role,
             "content": self.content,
-            "current_exercise": self.current_exercise,
         }
 
     def json_safe(self):
