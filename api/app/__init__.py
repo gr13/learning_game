@@ -4,11 +4,13 @@ from flask_cors import CORS
 from flask_restful import Api
 
 from app.db import db
-from app.resources.helloworld import HelloWorld
-from app.resources.module import Module
 from app.monitoring.logging import configure_logging
 from app.monitoring.request_logger import register_request_logging
 from app.models.exercises import ExercisesModel  # noqa: F401
+from app.resources.helloworld import HelloWorld
+from app.resources.module import Module
+from app.resources.next_exercise import NextExercise
+from app.resources.end_module import EndModule
 
 
 import app.models as app_models  # noqa: F401
@@ -25,13 +27,12 @@ def create_app(config: dict | None = None):
     app.config["DEBUG"] = os.environ.get("DEBUG", "0") == "1"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    configure_logging(app)
-
     # ------------------------------------------------
     # Database configuration
     # ------------------------------------------------
     if config:
         app.config.update(config)
+        configure_logging(app)
     else:
         user = os.environ.get("MYSQL_USER")
         password = os.environ.get("MYSQL_ROOT_PASSWORD")
@@ -98,6 +99,10 @@ def create_app(config: dict | None = None):
     # ------------------------------------------------
     api.add_resource(HelloWorld, "/")
     api.add_resource(Module, "/modules/<int:module_type_id>")
+    api.add_resource(
+        NextExercise, "/modules/<int:module_type_id>/next-exercise"
+    )
+    api.add_resource(EndModule, "/modules/<int:module_type_id>/end-module")
 
     # ------------------------------------------------
     # Request logging

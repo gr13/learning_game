@@ -44,6 +44,7 @@ services:
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - DATABASE_NAME=${DATABASE_NAME}
             - MYSQL_HOST=db
+            - API_LOG_FILE=/logs/api.log
         expose:
             - 9000
 

@@ -8,29 +8,55 @@ from app.models.sessions import SessionsModel
 
 
 class LessonEngine:
-    """Compatibility engine for resources/module.py.
-
-    This mirrors the existing `ModuleEngine.run_module(...)` signature so
-    `resources/module.py` can switch engines with minimal changes.
-    """
-
     def __init__(self) -> None:
         self.orchestrator = LessonOrchestrator()
 
-    def run_module(
+    def start(
         self,
+        module_type_id: int,
         module: ModulesModel,
         session: SessionsModel,
-        user_input: str | None = None,
     ) -> dict[str, Any]:
-        if user_input is None:
-            return self.orchestrator.start(
-                module_id=module.id,
-                session_id=session.id,
-            )
+        return self.orchestrator.start(
+            module_type_id=module_type_id,
+            module_id=module.id,
+            session_id=session.id,
+        )
 
+    def answer(
+        self,
+        module_type_id: int,
+        module: ModulesModel,
+        session: SessionsModel,
+        user_input: str,
+    ) -> dict[str, Any]:
         return self.orchestrator.continue_turn(
+            module_type_id=module_type_id,
             module_id=module.id,
             session_id=session.id,
             user_input=user_input,
+        )
+
+    def next_exercise(
+        self,
+        module_type_id: int,
+        module: ModulesModel,
+        session: SessionsModel,
+    ) -> dict[str, Any]:
+        return self.orchestrator.next_exercise(
+            module_type_id=module_type_id,
+            module_id=module.id,
+            session_id=session.id,
+        )
+
+    def end_module(
+        self,
+        module_type_id: int,
+        module: ModulesModel,
+        session: SessionsModel,
+    ) -> dict[str, Any]:
+        return self.orchestrator.end_module(
+            module_type_id=module_type_id,
+            module_id=module.id,
+            session_id=session.id,
         )

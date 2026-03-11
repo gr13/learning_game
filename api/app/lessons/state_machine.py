@@ -15,22 +15,15 @@ class LessonStateMachine:
             return state
 
         if event.event_type == EventType.USER_ANSWER:
-            state.phase = Phase.FEEDBACK
-            return state
-
-        if event.event_type == EventType.REQUEST_DRILL:
-            state.phase = Phase.MICRO_DRILL
-            state.micro_drill_active = True
-            return state
-
-        if event.event_type == EventType.NEXT_EXERCISE:
-            state.exercise_index += 1
-            state.task_round = 1
-            state.micro_drill_active = False
             state.phase = Phase.EXERCISE
             return state
 
-        if event.event_type == EventType.FINISH_MODULE:
+        if event.event_type == EventType.NEXT_EXERCISE:
+            state.phase = Phase.EXERCISE
+            state.exercise_index += 1
+            return state
+
+        if event.event_type == EventType.END_MODULE:
             state.phase = Phase.CLOSING
             return state
 

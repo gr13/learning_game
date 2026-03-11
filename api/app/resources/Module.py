@@ -1,12 +1,13 @@
 from flask_restful import Resource
 from flask import request
 from flask import current_app
-from app.models.modules import ModulesModel
+
 from app.lessons.engine import LessonEngine
+from app.models.modules import ModulesModel
 from app.models.training_lesson import TrainingLessonModel
-from app.enums import LevelEnum
 from app.sessions.session_store import SessionStore
 from app.monitoring.performance import time_register
+from app.models.profile import ProfileModel
 
 # TODO:
 # •	Add response-type detector (JSON vs plain text auto handler)
@@ -30,7 +31,9 @@ class Module(Resource):
     @time_register("Module GET")
     def get(self, module_type_id):
         """
-        initiates the module
+        Start module:
+        - new session/module when no session_id
+        - resume existing session/module when session_id provided
         """
         session_id = request.args.get("session_id", type=int)
 
@@ -55,7 +58,7 @@ class Module(Resource):
             module = ModulesModel.find_by_id(session.module_id)
             if not module:
                 return {"mode": "error", "message": "Module not found"}, 404
-            
+
             if module.module_type != requested_type:
                 return {
                     "mode": "error",
@@ -66,9 +69,9 @@ class Module(Resource):
             # create session
             session = SessionStore.create_session()
             # create lesson
-            # TODO: create correctly with proper Level
+            profile = ProfileModel.find_by_id(1)
             lesson = TrainingLessonModel(
-                user_level=LevelEnum.A2)
+                user_level=profile.get_user_level() if profile else "A2")
             lesson.save_to_db()
             # create module
             module = ModulesModel(
@@ -83,10 +86,10 @@ class Module(Resource):
             f"module_start | module_type_id={module_type_id} | session_id={session.id}"  # noqa: E501
         )
 
-        result = self.module_engine.run_module(
+        result = self.module_engine.start(
+            module_type_id=module_type_id,
             module=module,
             session=session,
-            user_input=None
         )
         result["session_id"] = session.id
         return result
@@ -98,23 +101,26 @@ class Module(Resource):
 
         Expects JSON:
         {
-        "module_type_id": 1,
-        "session_id": 123,
-        "user_input": "Ich gehe zur Schule"
+            "session_id": 123,
+            "button": "answer" | "next_exercise" | "end_module",
+            "user_input": "..."   # required only when button == "answer"
         }
         """
         data = request.get_json(silent=True) or {}
 
         session_id = data.get("session_id")
+        button = data.get("button", "answer")
+        user_input = data.get("user_input")
+
         current_app.logger.info(
             f"module_continue | module_type_id={module_type_id} | session_id={session_id}"  # noqa: E501
         )
-        user_input = data.get("user_input")
 
-        # Basic validation
-        if not session_id or not user_input:
-            return {
-                "mode": "error", "message": "Missing required fields"}, 400
+        if not session_id:
+            return {"mode": "error", "message": "Missing session_id"}, 400
+
+        if button == "answer" and not user_input:
+            return {"mode": "error", "message": "Missing user_input"}, 400
 
         session = SessionStore.get_session(session_id)
         if not session:
@@ -141,9 +147,29 @@ class Module(Resource):
             f"module_continue | module_type_id={module_type_id} | session_id={session_id}",  # noqa: E501
         )
 
-        result = self.module_engine.run_module(
-            module=module,
-            session=session,
-            user_input=user_input
-        )
-        return result
+        if button == "next_exercise":
+            return self.module_engine.next_exercise(
+                module_type_id=module_type_id,
+                module=module,
+                session=session,
+            )
+
+        if button == "end_module":
+            return self.module_engine.end_module(
+                module_type_id=module_type_id,
+                module=module,
+                session=session,
+            )
+
+        if button != "answer":
+            return {
+                "mode": "error",
+                "message": f"Unsupported button: {button}"
+            }, 400
+
+        return self.module_engine.answer(
+                module_type_id=module_type_id,
+                module=module,
+                session=session,
+                user_input=user_input,
+            )

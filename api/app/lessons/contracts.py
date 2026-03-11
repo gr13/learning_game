@@ -12,19 +12,16 @@ class ResponseMode(str, Enum):
 
 
 class Phase(str, Enum):
-    INTRO = "intro"
-    EXERCISE = "exercise"
-    FEEDBACK = "feedback"
-    MICRO_DRILL = "micro_drill"
-    CLOSING = "closing"
+    INTRO = "intro"          # start: word explanation + exercise 1 bootstrap
+    EXERCISE = "exercise"    # user<->gpt loop
+    CLOSING = "closing"      # introduced / learned / teacher status
 
 
 class EventType(str, Enum):
     START = "start"
     USER_ANSWER = "user_answer"
-    REQUEST_DRILL = "request_drill"
     NEXT_EXERCISE = "next_exercise"
-    FINISH_MODULE = "finish_module"
+    END_MODULE = "end_module"
 
 
 class LessonEnvelope(TypedDict):
@@ -40,10 +37,8 @@ class LessonEvent:
 
 @dataclass
 class LessonState:
-    module_id: int
+    module_type_id: int
     session_id: int
     phase: Phase = Phase.INTRO
-    exercise_index: int = 1
-    task_round: int = 1
-    micro_drill_active: bool = False
+    exercise_index: int = 0
     metadata: dict[str, Any] = field(default_factory=dict)

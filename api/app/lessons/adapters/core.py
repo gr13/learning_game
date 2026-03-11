@@ -11,12 +11,20 @@ from app.models.profile import ProfileModel
 
 
 class CoreLessonAdapter(BaseLessonAdapter):
-    """CORE module adapter skeleton."""
+    """Generic plan-based adapter for CORE/DOMAIN/READING/WRITING/SPEAKING."""
 
-    module_id = 1
+    def __init__(
+        self,
+        module_type_id: int,
+        plan_module_name: str,
+        max_exercises: int,
+    ) -> None:
+        self.module_type_id = module_type_id
+        self.plan_module_name = plan_module_name
+        self.max_exercises = max_exercises
 
     def build_start_package(self, state: LessonState) -> dict[str, Any]:
-        plans = load_plan_bundle()
+        plans = load_plan_bundle(module_name=self.plan_module_name)
         profile = ProfileModel.find_by_id(1)
 
         return {
@@ -28,8 +36,9 @@ class CoreLessonAdapter(BaseLessonAdapter):
                 ),
                 "exercise_index": state.exercise_index,
                 "phase": state.phase.value,
+                "max_exercises": self.max_exercises,
             },
-            "task": "introduce new word and prepare first exercise",
+            "intent": "start_module",
         }
 
     def build_continue_package(
@@ -42,13 +51,13 @@ class CoreLessonAdapter(BaseLessonAdapter):
                 "session_id": state.session_id,
                 "exercise_index": state.exercise_index,
                 "phase": state.phase.value,
-                "task_round": state.task_round,
-                "micro_drill_active": state.micro_drill_active,
+                "max_exercises": self.max_exercises,
             },
             "event": {
                 "type": event.event_type.value,
                 "user_input": event.user_input,
             },
+            "intent": event.event_type.value,
         }
 
     def expected_schema_for_phase(
