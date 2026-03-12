@@ -1,5 +1,7 @@
 import os
 from openai import OpenAI
+from pprint import pprint
+from flask import current_app
 from app.monitoring.performance import time_register
 
 
@@ -13,6 +15,8 @@ class ChatGPT:
     - It only sends whatever messages it receives.
     - Session logic must be handled elsewhere.
     """
+
+    class_id = "ChatGPT"
 
     def __init__(self):
 
@@ -44,6 +48,19 @@ class ChatGPT:
             ...
         ]
         """
+        current_app.logger.info(" ")
+        current_app.logger.info(" ")
+        current_app.logger.info(" ")
+        current_app.logger.info(
+            f"{self.class_id}: model: {pprint(self.model)}")
+        current_app.logger.info(" ")
+        current_app.logger.info(" ")
+        current_app.logger.info(" ")
+        current_app.logger.info(
+            f"{self.class_id}: messages: {pprint(messages)}")
+        current_app.logger.info(" ")
+        current_app.logger.info(" ")
+        current_app.logger.info(" ")
 
         return self.client.chat.completions.create(
             model=self.model,
