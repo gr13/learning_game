@@ -1,6 +1,10 @@
 {
     "exercise": "new_word_explanation",
-    "mode": "explanation",
+    "input": {
+        "the_new_word": "string",
+        "practice_level": "A1 | A2 | B1 | B2 | C1",
+        "strict_json_required": true
+    },
     "rules": {
         "examples_min": 2,
         "examples_max": 5,
