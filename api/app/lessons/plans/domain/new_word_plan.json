@@ -13,7 +13,7 @@
         "partOfSpeech": "string",
         "pronunciation": "string",
         "definition": "string",
-        "meaning": "string",
+        "translation": "string",
         "examples": [
             {
                 "de": "string",
@@ -21,7 +21,9 @@
             }
         ],
         "forms": {
-            "praesens": "string"
+            "praesens": "string",
+            "praeteritum": "string",
+            "perfekt": "string"
         }
     }
 }

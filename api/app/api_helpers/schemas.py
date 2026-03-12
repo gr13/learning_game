@@ -6,7 +6,7 @@ EXPLANATION_SCHEMA = {
         "partOfSpeech",
         "pronunciation",
         "definition",
-        "meaning",
+        "translation",
         "examples",
         "forms"
     ],
@@ -16,7 +16,7 @@ EXPLANATION_SCHEMA = {
         "partOfSpeech": {"type": "string"},
         "pronunciation": {"type": "string"},
         "definition": {"type": "string"},
-        "meaning": {"type": "string"},
+        "translation": {"type": "string"},
         "examples": {
             "type": "array",
             "items": {

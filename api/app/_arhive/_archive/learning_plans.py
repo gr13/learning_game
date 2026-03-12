@@ -72,7 +72,7 @@ MODULE_1_PLAN = {
                     "partOfSpeech": "string",
                     "pronunciation": "string",
                     "definition": "string",
-                    "meaning": "string",
+                    "translation": "string",
                     "examples": [
                         {
                             "de": "string",

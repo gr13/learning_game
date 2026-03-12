@@ -43,6 +43,7 @@ export function renderExplanation(data) {
             <strong>Part of Speech:</strong> ${data.partOfSpeech}<br>
             <strong>Pronunciation:</strong> ${data.pronunciation}<br>
             <strong>Definition:</strong> ${data.definition}
+            <strong>Translation:</strong> ${data.translation || ""}
         </div>
     `;
 
