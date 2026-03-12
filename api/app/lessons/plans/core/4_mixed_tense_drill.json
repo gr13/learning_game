@@ -2,7 +2,10 @@
     "exercise": "mixed_tense_drill",
     "tasks_per_exercise": 5,
     "rules": {
-        "tenses": [
+        "reinforce": "practice_list",
+        "focus_primary": "practice_list",
+        "sentence_generation": true,
+        "target_zeitformen": [
             "Präsens",
             "Präteritum",
             "Perfekt",
@@ -10,6 +13,28 @@
             "Futur I",
             "Futur II"
         ],
-        "respect_practice_level": true
+        "task_type_distribution": [
+            "fill_in_blank",
+            "tense_person_transform",
+            "question_building",
+            "error_correction",
+            "translation_de_en",
+            "short_context_completion",
+            "mini_dialogue_completion"
+        ],
+        "select_distinct_task_types": true,
+        "task_type_selection": "random_unique",
+        "task_type_selection_policy": "select_unique_task_types"
+    },
+    "exercise_schema": {
+        "mode": "exercise",
+        "exerciseType": "mixed_tense_drill",
+        "tasks": [
+            {
+                "task_number": "integer",
+                "type": "string",
+                "instruction": "string"
+            }
+        ]
     }
 }
