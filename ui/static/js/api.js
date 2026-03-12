@@ -21,3 +21,29 @@ export async function postAnswer(moduleId, sessionId, text) {
 
     return res.json();
 }
+
+export async function postNextExercise(sessionId) {
+
+    const res = await fetch("/api/modules/next-exercise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            session_id: sessionId
+        })
+    });
+
+    return res.json();
+}
+
+export async function postEndModule(sessionId) {
+
+    const res = await fetch("/api/modules/end-module", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            session_id: sessionId
+        })
+    });
+
+    return res.json();
+}

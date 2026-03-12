@@ -2,7 +2,12 @@
 // app.js (ENTRY POINT)
 // ==============================
 
-import { getModule, postAnswer } from "./api.js";
+import {
+    getModule,
+    postAnswer,
+    postNextExercise,
+    postEndModule
+} from "./api.js";
 import { handleBackendResponse } from "./router.js";
 import { setupAutoResize } from "./ui.js";
 import { appendUserText } from "./renderer.js";
@@ -49,6 +54,36 @@ window.sendAnswer = async function () {
             text
         );
 
+        handleBackendResponse(data);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// ------------------------------
+// Next Exercise
+// ------------------------------
+window.nextExercise = async function () {
+
+    if (!currentSessionId) return;
+
+    try {
+        const data = await postNextExercise(currentSessionId);
+        handleBackendResponse(data);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// ------------------------------
+// End Module
+// ------------------------------
+window.endModule = async function () {
+
+    if (!currentSessionId) return;
+
+    try {
+        const data = await postEndModule(currentSessionId);
         handleBackendResponse(data);
     } catch (err) {
         console.error(err);
