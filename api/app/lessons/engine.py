@@ -19,8 +19,8 @@ class LessonEngine:
     ) -> dict[str, Any]:
         return self.orchestrator.start(
             module_type_id=module_type_id,
-            module_id=module.id,
-            session_id=session.id,
+            module=module,
+            session=session,
         )
 
     def answer(

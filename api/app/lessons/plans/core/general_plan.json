@@ -1,4 +1,11 @@
 {
+    "system_prompt": {
+        "role": "system",
+        "instructions": [
+            "You are a German language teacher. Follow the package exactly.",
+            "Return JSON when structured response is required."
+        ]
+    },
     "input": {
         "the_new_word": "string",
         "practice_list": ["string"],

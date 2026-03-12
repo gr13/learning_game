@@ -69,7 +69,7 @@ class Module(Resource):
             # create session
             session = SessionStore.create_session()
             # create lesson
-            profile = ProfileModel.find_by_id(1)
+            profile = ProfileModel.find_by_id()
             lesson = TrainingLessonModel(
                 user_level=profile.get_user_level() if profile else "A2")
             lesson.save_to_db()

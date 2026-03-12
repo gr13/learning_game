@@ -86,11 +86,11 @@ class SessionStore:
                 content=system_prompt,
             )
 
-    @staticmethod
-    def get_current_exercise_index(session_id: int, module_id: int) -> int:
-        rows = ExercisesModel.find_by_session_id(session_id)
-        rows = [r for r in rows if r.module_id == module_id]
-        return max((r.exercise_index for r in rows), default=0)
+    # @staticmethod
+    # def get_current_exercise_index(session_id: int, module_id: int) -> int:
+    #     rows = ExercisesModel.find_by_session_id(session_id)
+    #     rows = [r for r in rows if r.module_id == module_id]
+    #     return max((r.exercise_index for r in rows), default=0)
 
     @staticmethod
     def create_exercise_marker(

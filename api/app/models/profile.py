@@ -31,7 +31,7 @@ class ProfileModel(db.Model):
     # Queries
     # ----------------------------
     @classmethod
-    def find_by_id(cls, _id: int):
+    def find_by_id(cls, _id: int = 1):
         return db.session.get(cls, _id)
 
     @classmethod

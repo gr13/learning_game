@@ -25,7 +25,7 @@ class CoreLessonAdapter(BaseLessonAdapter):
 
     def build_start_package(self, state: LessonState) -> dict[str, Any]:
         plans = load_plan_bundle(module_name=self.plan_module_name)
-        profile = ProfileModel.find_by_id(1)
+        profile = ProfileModel.find_by_id()
 
         return {
             "plans": plans,
