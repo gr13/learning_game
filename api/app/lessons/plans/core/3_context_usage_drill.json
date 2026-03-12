@@ -1,12 +1,8 @@
 {
     "exercise": "context_usage_drill",
-    "tasks_per_exercise": 5,
     "rules": {
-        "focus_primary": "the_new_word",
         "reinforce": "practice_list",
-        "sentence_generation": true,
-        "respect_practice_level": true,
-        "no_grammar_above_base_level": true
+        "sentence_generation": true
     },
     "exercise_schema": {
         "mode": "exercise",
@@ -15,6 +11,7 @@
         "tasks": [
             {
                 "type": "string",
+                "exerciseType": "context_usage_drill",
                 "instruction": "string"
             }
         ]
