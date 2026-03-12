@@ -1,24 +1,22 @@
 {
     "input": {
         "the_new_word": "string",
-        "practice_list": [
-            "string"
-        ],
+        "practice_list": ["string"],
         "practice_level": "A1 | A2 | B1 | B2 | C1",
-        "strict_json_required": true
     },
     "rules": {
+        "strict_json_required": true,
         "exact_task_count": 5,
         "respect_practice_level": true,
         "no_grammar_above_base_level": true,
         "task_numbering_required": true,
-        "task_instruction_format": "Task {n}: <instruction>"
+        "task_instruction_format": "Task {n}: <instruction>",
+        "never_mix_json_and_text": true
     },
     "practice_level_constraints": {
         "instruction": "Before generating explanations, exercises, or feedback, compare complexity with the user's practice_level. Vocabulary may stretch slightly above the level, but grammar structures must stay at the base level.",
         "allow_slight_vocabulary_stretch": true,
         "max_vocabulary_exceed": 0.5,
-        "no_grammar_above_base_level": true,
         "simplify_if_uncertain": true
     },
     "difficulty_distribution_model": {
@@ -58,14 +56,11 @@
             "avoid_unnecessary_theory": true,
             "max_sentences_per_error": 4
         },
-        "respect_practice_level": true,
         "include_level_label": true,
         "recommendation_required": true,
         "recommendation_must_match_exact_option": true,
         "recommendation_no_extra_text": true,
-        "recommendation_options": [
-            "A – Micro Drill"
-        ],
+        "recommendation_options": ["A – Micro Drill"],
         "recommendation_logic": {
             "offer_micro_drill_only_if_necessary": true,
             "do_not_offer_if_all_answers_correct": true,
@@ -90,9 +85,5 @@
                 }
             ]
         }
-    },
-    "general_rules": {
-        "never_mix_json_and_text": true,
-        "respect_practice_level": true
     }
 }
