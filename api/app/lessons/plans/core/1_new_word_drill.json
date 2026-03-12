@@ -1,32 +1,32 @@
 {
     "exercise": "new_word_drill",
-    "mode": "exercise",
     "rules": {
-        "examples_min": 2,
-        "examples_max": 5,
-        "respect_practice_level": true,
-        "complete_zeitformen_required": true
+        "focus_primary": "the_new_word",
+        "task_type_distribution": [
+                    "fill_in_blank",
+                    "build_sentence",
+                    "tense_person_transform",
+                    "qa_pair",
+                    "error_correction",
+                    "translation_de_en",
+                    "synonym_antonym_match",
+                    "short_context_completion",
+                    "mini_dialogue_completion",
+                    "personalization_sentence"
+                    ],
+        "select_distinct_task_types": true,
+        "task_type_selection": "random_unique",
+        "task_type_selection_policy": "select_unique_task_types"
     },
-    "response_schema": {
-        "mode": "explanation",
-        "word": "string",
-        "part_of_speech": "string",
-        "pronunciation": "string",
-        "definition": "string",
-        "translation": "string",
-        "examples": [
+    "exercise_schema": {
+        "mode": "exercise",
+        "exerciseType": "new_word_drill",
+        "tasks": [
             {
-                "de": "string",
-                "en": "string"
+                "task_number": "integer",
+                "type": "string",
+                "instruction": "string"
             }
-        ],
-        "zeitformen": {
-            "praesens": "string",
-            "praeteritum": "string",
-            "perfekt": "string",
-            "plusquamperfekt": "string",
-            "futur_I": "string",
-            "futur_II": "string"
-        }
+        ]
     }
 }

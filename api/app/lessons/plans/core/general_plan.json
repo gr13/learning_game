@@ -7,6 +7,13 @@
         "practice_level": "A1 | A2 | B1 | B2 | C1",
         "strict_json_required": true
     },
+    "rules": {
+        "exact_task_count": 5,
+        "respect_practice_level": true,
+        "no_grammar_above_base_level": true,
+        "task_numbering_required": true,
+        "task_instruction_format": "Task {n}: <instruction>"
+    },
     "practice_level_constraints": {
         "instruction": "Before generating explanations, exercises, or feedback, compare complexity with the user's practice_level. Vocabulary may stretch slightly above the level, but grammar structures must stay at the base level.",
         "allow_slight_vocabulary_stretch": true,

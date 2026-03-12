@@ -1,17 +1,29 @@
 {
     "exercise": "repetition_drill",
-    "tasks_per_exercise": 5,
     "rules": {
-        "focus_primary": "the_new_word",
         "reinforce": "practice_list",
-        "no_grammar_above_base_level": true
+        "task_type_distribution": [
+                    "fill_in_blank",
+                    "build_sentence",
+                    "tense_person_transform",
+                    "qa_pair",
+                    "error_correction",
+                    "translation_de_en",
+                    "synonym_antonym_match",
+                    "short_context_completion",
+                    "mini_dialogue_completion",
+                    "personalization_sentence"
+                    ],
+        "select_distinct_task_types": true,
+        "task_type_selection": "random_unique",
+        "task_type_selection_policy": "select_unique_task_types"
     },
     "exercise_schema": {
         "mode": "exercise",
-        "exerciseNumber": "integer",
         "exerciseType": "repetition_drill",
         "tasks": [
             {
+                "task_number": "integer",
                 "type": "string",
                 "instruction": "string"
             }
