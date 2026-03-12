@@ -18,6 +18,7 @@ from app.lessons.registry import LessonRegistry
 from app.lessons.schemas import EXERCISE_SCHEMA
 from app.lessons.state_machine import LessonStateMachine
 from app.sessions.session_store import SessionStore
+from app.models.core_vocabulary import CoreVocabularyModel
 
 
 class LessonOrchestrator:
@@ -40,6 +41,21 @@ class LessonOrchestrator:
         state = self.state_machine.apply(state, LessonEvent(EventType.START))
         state.exercise_index = 1
 
+        if module_type_id == 1:
+            row = CoreVocabularyModel.find_new()
+            if not row:
+                return {
+                    "mode": "error",
+                    "message": "No new core vocabulary word found.",
+                }
+
+            row.mark_introduced()
+            introduced_words = [
+                w.word for w in CoreVocabularyModel.find_introduced()]
+
+            state.metadata["the_new_word"] = row.word
+            state.metadata["practice_list"] = introduced_words
+
         package = adapter.build_start_package(state)
         SessionStore.append_message(
             session_id,
@@ -47,8 +63,20 @@ class LessonOrchestrator:
             self._build_system_prompt(package)
         )
 
-        SessionStore.append_message(
-            session_id, "user", "Introduce one new word.")
+        seed_word = state.metadata.get("the_new_word")
+        if seed_word:
+            SessionStore.append_message(
+                session_id,
+                "user",
+                f"Introduce this exact word: {seed_word}",
+            )
+        else:
+            SessionStore.append_message(
+                session_id,
+                "user",
+                "Introduce one new word.",
+            )
+
         explanation = self.chat_loop.call(session_id, EXPLANATION_SCHEMA, True)
         if explanation["mode"] != "json":
             return explanation
@@ -94,7 +122,7 @@ class LessonOrchestrator:
             session_id=session_id,
             exercise_index=max(1, current_ex),
         )
-        
+
         event = LessonEvent(EventType.USER_ANSWER, user_input=user_input)
         state = self.state_machine.apply(state, event)
 
@@ -131,6 +159,11 @@ class LessonOrchestrator:
         )
         state = self.state_machine.apply(
             state, LessonEvent(EventType.NEXT_EXERCISE))
+
+        if module_type_id == 1:
+            state.metadata["practice_list"] = [
+                w.word for w in CoreVocabularyModel.find_introduced()
+            ]
 
         package = adapter.build_continue_package(state, LessonEvent(
             EventType.NEXT_EXERCISE))

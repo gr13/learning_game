@@ -37,6 +37,8 @@ class CoreLessonAdapter(BaseLessonAdapter):
                 "exercise_index": state.exercise_index,
                 "phase": state.phase.value,
                 "max_exercises": self.max_exercises,
+                "the_new_word": state.metadata.get("the_new_word"),
+                "practice_list": state.metadata.get("practice_list", []),
             },
             "intent": "start_module",
         }
@@ -52,6 +54,8 @@ class CoreLessonAdapter(BaseLessonAdapter):
                 "exercise_index": state.exercise_index,
                 "phase": state.phase.value,
                 "max_exercises": self.max_exercises,
+                "the_new_word": state.metadata.get("the_new_word"),
+                "practice_list": state.metadata.get("practice_list", []),
             },
             "event": {
                 "type": event.event_type.value,

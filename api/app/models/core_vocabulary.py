@@ -34,11 +34,11 @@ class CoreVocabularyModel(db.Model):
         return db.session.get(cls, _id)
 
     @classmethod
-    def find_new(cls):
+    def find_new(cls) -> "CoreVocabularyModel | None":
         return cls.query.filter_by(introduced=False).first()
 
     @classmethod
-    def find_introduced(cls):
+    def find_introduced(cls) -> list["CoreVocabularyModel"]:
         return cls.query.filter_by(introduced=True).order_by(cls.id).all()
 
     @classmethod
@@ -53,7 +53,7 @@ class CoreVocabularyModel(db.Model):
     # State transitions
     # ----------------------------
 
-    def mark_introduced(self):
+    def mark_introduced(self) -> None:
         self.introduced = True
         self.dt_introduced = datetime.now(UTC)
         db.session.commit()
