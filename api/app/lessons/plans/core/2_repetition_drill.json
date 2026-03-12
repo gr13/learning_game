@@ -1,7 +1,7 @@
 {
     "exercise": "repetition_drill",
     "rules": {
-        "reinforce": "practice_list",
+        "focus_primary": "practice_list",
         "task_type_distribution": [
                     "fill_in_blank",
                     "build_sentence",

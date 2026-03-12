@@ -2,7 +2,6 @@
     "exercise": "mixed_tense_drill",
     "tasks_per_exercise": 5,
     "rules": {
-        "reinforce": "practice_list",
         "focus_primary": "practice_list",
         "sentence_generation": true,
         "target_zeitformen": [

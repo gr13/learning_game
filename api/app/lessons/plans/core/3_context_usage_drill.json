@@ -1,7 +1,7 @@
 {
     "exercise": "context_usage_drill",
     "rules": {
-        "reinforce": "practice_list",
+        "focus_primary": "practice_list",
         "sentence_generation": true
     },
     "exercise_schema": {

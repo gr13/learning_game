@@ -1,8 +1,24 @@
 {
     "exercise": "translation_drill",
-    "tasks_per_exercise": 5,
     "rules": {
         "direction": "EN->DE",
-        "respect_practice_level": true
+        "focus_primary": "practice_list",
+        "exact_task_count": 5,
+        "task_type_distribution": [
+            "translation_en_de"
+        ],
+        "instruction_style": "source_sentence_only",
+        "direction_label_in_header_only": true
+    },
+    "exercise_schema": {
+        "mode": "exercise",
+        "exerciseType": "translation_drill",
+        "tasks": [
+            {
+                "task_number": "integer",
+                "type": "string",
+                "instruction": "string"
+            }
+        ]
     }
 }
