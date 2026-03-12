@@ -17,14 +17,7 @@ CREATE TABLE IF NOT EXISTS core_vocabulary (
     INDEX idx_learned (learned)
 );
 
-LOAD DATA INFILE "/docker-entrypoint-initdb.d/core_vocabulary.csv"
-IGNORE
-INTO TABLE core_vocabulary
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
--- IGNORE 1 ROWS
-(word);
+
 
 -- ##################################################
 -- Domain Vocabulary
@@ -43,14 +36,7 @@ CREATE TABLE IF NOT EXISTS domain_vocabulary (
     INDEX idx_learned (learned)
 );
 
-LOAD DATA INFILE "/docker-entrypoint-initdb.d/domain_vocabulary.csv"
-IGNORE
-INTO TABLE domain_vocabulary
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
--- IGNORE 1 ROWS
-(word, domain);
+
 
 -- ##################################################
 -- reading exam
@@ -65,14 +51,7 @@ CREATE TABLE IF NOT EXISTS reading_exam (
     INDEX idx_done (done)
 );
 
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/reading_exam.csv'
-IGNORE
-INTO TABLE reading_exam
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(task_level, main_task);
+
 
 -- ##################################################
 -- writing exam
@@ -87,14 +66,7 @@ CREATE TABLE IF NOT EXISTS writing_exam (
     INDEX idx_done (done)
 );
 
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/writing_exam.csv'
-IGNORE
-INTO TABLE writing_exam
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(task_level, main_task);
+
 
 -- ##################################################
 -- speaking exam
@@ -109,14 +81,7 @@ CREATE TABLE IF NOT EXISTS speaking_exam (
     INDEX idx_done (done)
 );
 
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/speaking_exam.csv'
-IGNORE
-INTO TABLE speaking_exam
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(task_level, main_task);
+
 
 
 -- ##################################################
@@ -206,3 +171,47 @@ CREATE TABLE IF NOT EXISTS session_messages (
     INDEX idx_session_id (session_id)
 );
 
+LOAD DATA INFILE "/docker-entrypoint-initdb.d/core_vocabulary.csv"
+IGNORE
+INTO TABLE core_vocabulary
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS
+(word);
+
+LOAD DATA INFILE "/docker-entrypoint-initdb.d/domain_vocabulary.csv"
+IGNORE
+INTO TABLE domain_vocabulary
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS
+(word, domain);
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/reading_exam.csv'
+IGNORE
+INTO TABLE reading_exam
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(task_level, main_task);
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/writing_exam.csv'
+IGNORE
+INTO TABLE writing_exam
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(task_level, main_task);
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/speaking_exam.csv'
+IGNORE
+INTO TABLE speaking_exam
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(task_level, main_task);
