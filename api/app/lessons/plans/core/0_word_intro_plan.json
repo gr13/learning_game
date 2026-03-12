@@ -1,16 +1,16 @@
 {
-    "exercise": "new_word_drill",
+    "exercise": "new_word_explanation",
     "mode": "explanation",
     "rules": {
         "examples_min": 2,
         "examples_max": 5,
         "respect_practice_level": true,
-        "complete_zeitformen_required": true
+        "complete_forms_required": true
     },
     "response_schema": {
         "mode": "explanation",
         "word": "string",
-        "part_of_speech": "string",
+        "partOfSpeech": "string",
         "pronunciation": "string",
         "definition": "string",
         "translation": "string",
@@ -27,7 +27,6 @@
             "plusquamperfekt": "string",
             "futur_I": "string",
             "futur_II": "string"
-
         }
     }
 }
