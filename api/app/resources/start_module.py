@@ -23,7 +23,8 @@ class StartModule(Resource):
         - new session/module when no session_id
         - resume existing session/module when session_id provided
         """
-        session_id = request.args.get("session_id", type=int)
+        data = request.get_json(silent=True) or {}
+        session_id = data.get("session_id")
 
         requested_type = ModulesModel.module_type_from_module_id(
             module_type_id)
@@ -70,6 +71,12 @@ class StartModule(Resource):
                 }, 400
             lesson = TrainingLessonModel.find_by_id(
                 old_module.training_lesson_id)
+            if not lesson:
+                return {
+                    "mode": "error",
+                    "message": "Training lesson is not "
+                               f"found: {old_module.training_lesson_id}",
+                }, 400
 
         else:
             """

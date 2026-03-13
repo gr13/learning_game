@@ -2,8 +2,16 @@
 // api.js (Backend Layer)
 // ==============================
 
-export async function getModule(id) {
-    const res = await fetch(`/api/modules/${id}`);
+export async function getModule(id, sessionId = null) {
+    const body = {};
+    if (sessionId !== null) {
+        body.session_id = sessionId;
+    }
+    const res = await fetch(`/api/modules/start-module/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
     return res.json();
 }
 
