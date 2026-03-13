@@ -55,7 +55,7 @@ class LessonOrchestrator:
                 session=session)
 
         # -------- Step 1: general + drill 1 --------
-        return self._start_exercise(
+        return self.start_exercise(
             module_type_id=module_type_id,
             session=session,
             exercise=exercise)
@@ -95,11 +95,6 @@ class LessonOrchestrator:
 
         return self.chat_loop.call(
             session_id, expected_schema=None, expect_json=None)
-
-    def next_exercise(
-            self, module_type_id: int, module_id: int, session_id: int
-            ) -> LessonEnvelope:
-        pass
 
     # TODO: redo correctly
     def end_module(
@@ -192,7 +187,7 @@ class LessonOrchestrator:
 
         return self._load_json_safely(response, session)
 
-    def _start_exercise(
+    def start_exercise(
         self,
         module_type_id: int,
         session: SessionsModel,

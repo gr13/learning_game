@@ -19,6 +19,14 @@ class LessonEngine:
         session: SessionsModel,
         exercise: ExercisesModel,
     ) -> dict[str, Any]:
+        if exercise.exercise_index > 1:
+            return self.orchestrator.start_exercise(
+                module_type_id=module_type_id,
+                module=module,
+                session=session,
+                exercise=exercise,
+            )
+
         return self.orchestrator.start(
             module_type_id=module_type_id,
             module=module,
@@ -38,18 +46,6 @@ class LessonEngine:
             module_id=module.id,
             session_id=session.id,
             user_input=user_input,
-        )
-
-    def next_exercise(
-        self,
-        module_type_id: int,
-        module: ModulesModel,
-        session: SessionsModel,
-    ) -> dict[str, Any]:
-        return self.orchestrator.next_exercise(
-            module_type_id=module_type_id,
-            module_id=module.id,
-            session_id=session.id,
         )
 
     def end_module(

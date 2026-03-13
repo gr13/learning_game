@@ -19,7 +19,7 @@ class NextExercise(Resource):
         4. get old_exercise.exercise_index
         5. create session
         6. create exercise with session, module, exercise_index + 1
-        7. return self.module_engine.next_exercise
+        7. return self.module_engine.start
         """
         data = request.get_json(silent=True) or {}
         session_id = data.get("session_id")
@@ -62,8 +62,9 @@ class NextExercise(Resource):
         )
         exercise.save_to_db()
 
-        return self.module_engine.next_exercise(
-                module_type_id=module_type_id,
-                module=module,
-                session=session,
-            )
+        return self.module_engine.start(
+            module_type_id=module_type_id,
+            module=module,
+            session=session,
+            exercise=exercise
+        )
