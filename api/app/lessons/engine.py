@@ -5,6 +5,7 @@ from typing import Any
 from app.lessons.orchestrator import LessonOrchestrator
 from app.models.modules import ModulesModel
 from app.models.sessions import SessionsModel
+from app.models.exercises import ExercisesModel
 
 
 class LessonEngine:
@@ -16,11 +17,13 @@ class LessonEngine:
         module_type_id: int,
         module: ModulesModel,
         session: SessionsModel,
+        exercise: ExercisesModel,
     ) -> dict[str, Any]:
         return self.orchestrator.start(
             module_type_id=module_type_id,
             module=module,
             session=session,
+            exercise=exercise,
         )
 
     def answer(

@@ -5,9 +5,9 @@ from typing import Any
 
 from app.lessons.adapters.base import BaseLessonAdapter
 from app.lessons.contracts import LessonEvent, LessonState
-from app.lessons.plan_loader import load_plan_bundle
+# from app.lessons.plan_loader import load_plan_bundle
 from app.lessons.schemas import LESSON_JSON_SCHEMA
-from app.models.profile import ProfileModel
+# from app.models.profile import ProfileModel
 
 
 class CoreLessonAdapter(BaseLessonAdapter):
@@ -22,26 +22,6 @@ class CoreLessonAdapter(BaseLessonAdapter):
         self.module_type_id = module_type_id
         self.plan_module_name = plan_module_name
         self.max_exercises = max_exercises
-
-    def build_start_package(self, state: LessonState) -> dict[str, Any]:
-        plans = load_plan_bundle(module_name=self.plan_module_name)
-        profile = ProfileModel.find_by_id()
-
-        return {
-            "plans": plans,
-            "runtime": {
-                "session_id": state.session_id,
-                "practice_level": (
-                    profile.get_user_level() if profile else "A2"
-                ),
-                "exercise_index": state.exercise_index,
-                "phase": state.phase.value,
-                "max_exercises": self.max_exercises,
-                "the_new_word": state.metadata.get("the_new_word"),
-                "practice_list": state.metadata.get("practice_list", []),
-            },
-            "intent": "start_module",
-        }
 
     def build_continue_package(
         self,

@@ -8,6 +8,7 @@ from app.models.training_lesson import TrainingLessonModel
 from app.sessions.session_store import SessionStore
 from app.monitoring.performance import time_register
 from app.models.profile import ProfileModel
+from app.models.exercises import ExercisesModel
 
 # TODO:
 # •	Add response-type detector (JSON vs plain text auto handler)
@@ -65,6 +66,8 @@ class Module(Resource):
                     "message": "Session/module type mismatch",
                 }, 409
 
+            # check exercises
+
         else:  # new training day
             # create session
             session = SessionStore.create_session()
@@ -82,6 +85,14 @@ class Module(Resource):
             module.save_to_db()
             session.set_module_id(module.id)
 
+            # create exercises # 1
+            exercise = ExercisesModel(
+                module_id=module.id,
+                session_id=session.id,
+                exercise_index=1
+            )
+            exercise.save_to_db()
+
         current_app.logger.info(
             f"module_start | module_type_id={module_type_id} | session_id={session.id}"  # noqa: E501
         )
@@ -90,6 +101,7 @@ class Module(Resource):
             module_type_id=module_type_id,
             module=module,
             session=session,
+            exercise=exercise
         )
         result["session_id"] = session.id
         return result

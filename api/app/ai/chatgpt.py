@@ -1,5 +1,7 @@
 import os
 from openai import OpenAI
+from openai.types.chat import ChatCompletion, ChatCompletionMessageParam
+
 from pprint import pprint
 from flask import current_app
 from app.monitoring.performance import time_register
@@ -36,7 +38,10 @@ class ChatGPT:
     # Session-based conversation call (main method)
     # ----------------------------------------------------------
     @time_register("GPT Call")
-    def send_messages(self, messages: list):
+    def send_messages(
+            self,
+            messages: list[ChatCompletionMessageParam]
+            ) -> ChatCompletion:
         """
         Sends full conversation history.
 

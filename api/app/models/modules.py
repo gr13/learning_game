@@ -113,7 +113,7 @@ class ModulesModel(db.Model):
     # ----------------------------
     @staticmethod
     def module_type_from_module_id(
-        module_id: int
+        module_type_id: int
     ) -> ModuleTypeEnum | None:
         mapping = {
             1: ModuleTypeEnum.CORE,
@@ -122,7 +122,7 @@ class ModulesModel(db.Model):
             4: ModuleTypeEnum.WRITING,
             5: ModuleTypeEnum.SPEAKING,
         }
-        return mapping.get(module_id)
+        return mapping.get(module_type_id)
 
     @staticmethod
     def module_id_from_module_type(
