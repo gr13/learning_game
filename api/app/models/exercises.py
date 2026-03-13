@@ -81,7 +81,7 @@ class ExercisesModel(db.Model):
             cls.query
             .filter_by(session_id=session_id)
             .order_by(cls.id)
-            .all()
+            .first()
         )
 
     @classmethod

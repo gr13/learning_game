@@ -33,52 +33,44 @@ class StartModule(Resource):
                 "message": f"Unsupported module_type_id: {module_type_id}",
             }, 400
 
-        if session_id:  # training day exists: e.g. module 2
-            session = SessionStore.get_session(session_id)
-            if not session:
-                return {"mode": "error", "message": "Invalid session"}, 404
+        if session_id:
+            """
+            training_lesson exists: e.g. module 2
+            The logic: session exists, so we can get the current module
+            and exercise.
+            - mark the module connected to session as done
+            """
+            self._mark_module_and_session_as_done(session_id)
 
-            if not session.module_id:
-                return {
-                    "mode": "error",
-                    "message": "Session has no module_id"}, 400
-
-            module = ModulesModel.find_by_id(session.module_id)
-            if not module:
-                return {"mode": "error", "message": "Module not found"}, 404
-
-            if module.module_type != requested_type:
-                return {
-                    "mode": "error",
-                    "message": "Session/module type mismatch",
-                }, 409
-
-            # check exercises
-
-        else:  # new training day
-            # create session
-            session = SessionStore.create_session()
-            # create lesson
+        else:
+            """
+            New traning day
+            Create training_lesson
+            """
             profile = ProfileModel.find_by_id()
             lesson = TrainingLessonModel(
                 user_level=profile.get_user_level() if profile else "A2")
             lesson.save_to_db()
-            # create module
-            module = ModulesModel(
-                training_lesson_id=lesson.id,
-                module_type=requested_type,
-                done=False
-            )
-            module.save_to_db()
-            session.set_module_id(module.id)
+        # standard flow for both cases: create new module and exercise,
+        # connect to session
+        # create module
+        module = ModulesModel(
+            training_lesson_id=lesson.id,
+            module_type=requested_type,
+            done=False
+        )
+        module.save_to_db()
+        # always create session
+        session = SessionStore.create_session()
+        session.set_module_id(module.id)
 
-            # create exercises # 1
-            exercise = ExercisesModel(
-                module_id=module.id,
-                session_id=session.id,
-                exercise_index=1
-            )
-            exercise.save_to_db()
+        # create exercises # 1
+        exercise = ExercisesModel(
+            module_id=module.id,
+            session_id=session.id,
+            exercise_index=1
+        )
+        exercise.save_to_db()
 
         current_app.logger.info(
             f"module_start | module_type_id={module_type_id} | session_id={session.id}"  # noqa: E501
@@ -92,3 +84,22 @@ class StartModule(Resource):
         )
         result["session_id"] = session.id
         return result
+
+    @staticmethod
+    def _mark_module_and_session_as_done(session_id: int):
+        """
+        Mark old module as done.
+        We don't care about error here, just return None
+        TODO: add logging about failed session id
+        """
+        session = SessionStore.get_session(session_id)
+        if not session:
+            return
+
+        if not session.module_id:
+            return
+
+        module = ModulesModel.find_by_id(session.module_id)
+        if not module:
+            return
+        module.mark_done()
