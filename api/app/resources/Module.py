@@ -2,9 +2,8 @@ from flask_restful import Resource
 from flask import request
 from flask import current_app
 
-from app.lessons.engine import LessonEngine
+from app.lessons.orchestrator import LessonOrchestrator
 from app.models.modules import ModulesModel
-# from app.models.training_lesson import TrainingLessonModel
 from app.sessions.session_store import SessionStore
 from app.monitoring.performance import time_register
 # from app.models.profile import ProfileModel
@@ -27,7 +26,7 @@ class Module(Resource):
     class_id = "Module"
 
     def __init__(self):
-        self.module_engine = LessonEngine()
+        self.orchestrator = LessonOrchestrator()
 
     @time_register("Module POST")
     def post(self, module_type_id):
@@ -77,7 +76,7 @@ class Module(Resource):
             f"module_continue | module_type_id={module_type_id} | session_id={session_id}",  # noqa: E501
         )
 
-        return self.module_engine.answer(
+        return self.orchestrator.continue_turn(
                 module_type_id=module_type_id,
                 module=module,
                 session=session,

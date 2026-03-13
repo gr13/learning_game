@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request
 from flask import current_app
 
-from app.lessons.engine import LessonEngine
+from app.lessons.orchestrator import LessonOrchestrator
 from app.models.modules import ModulesModel
 from app.models.training_lesson import TrainingLessonModel
 from app.sessions.session_store import SessionStore
@@ -14,7 +14,7 @@ from app.monitoring.performance import time_register
 
 class StartModule(Resource):
     def __init__(self):
-        self.module_engine = LessonEngine()
+        self.orchestrator = LessonOrchestrator()
 
     @time_register("Module GET")
     def post(self, module_type_id: int):
@@ -112,7 +112,7 @@ class StartModule(Resource):
             f"module_start | module_type_id={module_type_id} | session_id={session.id}"  # noqa: E501
         )
 
-        result = self.module_engine.start(
+        result = self.orchestrator.start(
             module_type_id=module_type_id,
             module=module,
             session=session,

@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from app.lessons.engine import LessonEngine
+from app.lessons.orchestrator import LessonOrchestrator
 from app.models.modules import ModulesModel
 from app.sessions.session_store import SessionStore
 from app.models.exercises import ExercisesModel
@@ -8,7 +8,7 @@ from app.models.exercises import ExercisesModel
 
 class NextExercise(Resource):
     def __init__(self):
-        self.module_engine = LessonEngine()
+        self.orchestrator = LessonOrchestrator()
 
     def post(self):
         """
@@ -62,7 +62,7 @@ class NextExercise(Resource):
         )
         exercise.save_to_db()
 
-        return self.module_engine.start(
+        return self.orchestrator.start_exercise(
             module_type_id=module_type_id,
             module=module,
             session=session,
