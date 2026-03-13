@@ -1,4 +1,4 @@
-# import logging
+from __future__ import annotations
 from app.db import db
 
 
@@ -76,7 +76,7 @@ class ExercisesModel(db.Model):
         )
 
     @classmethod
-    def find_by_session_id(cls, session_id: int):
+    def find_by_session_id(cls, session_id: int) -> "ExercisesModel | None":
         return (
             cls.query
             .filter_by(session_id=session_id)
