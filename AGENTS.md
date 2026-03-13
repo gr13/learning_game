@@ -93,12 +93,11 @@ When proposing changes:
 
 ## Access Policy
 1. The agent always has read-only access to all project files.
-2. Read-only access is for analysis, review, and proposing changes.
-3. File modifications require explicit user permission via:
-- `update mode on <file_path>`
-4. `update mode off` revokes all write permissions.
-5. Creating new files is allowed only with explicit user permission.
-6. Deleting files is suggestion-only unless explicitly approved by the user.
+2. File modifications are never allowed during planning/review-only conversations.
+3. Outside planning/review-only conversations, the user may explicitly request implementation.
+4. Creating new files requires explicit user approval.
+5. Deleting files is suggestion-only unless explicitly approved by the user.
+
 
 ## Versioning Policy
 1. Every change to this file must append one line to `Version History`.
