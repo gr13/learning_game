@@ -19,7 +19,7 @@ class NextExercise(Resource):
         4. get old_exercise.exercise_index
         5. create session
         6. create exercise with session, module, exercise_index + 1
-        7. return self.module_engine.start
+        7. return orchestrator.start_exercise
         """
         data = request.get_json(silent=True) or {}
         session_id = data.get("session_id")
