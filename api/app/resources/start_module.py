@@ -40,7 +40,36 @@ class StartModule(Resource):
             and exercise.
             - mark the module connected to session as done
             """
-            self._mark_module_and_session_as_done(session_id)
+            old_session = SessionStore.get_session(session_id)
+            if not old_session:
+                return {
+                    "mode": "error",
+                    "message": f"Session is not found: {session_id}",
+                }, 400
+
+            if not old_session.module_id:
+                return {
+                    "mode": "error",
+                    "message": f"Session module id is incorrect: {session_id}",
+                }, 400
+
+            old_module = ModulesModel.find_by_id(old_session.module_id)
+            if not old_module:
+                return {
+                    "mode": "error",
+                    "message": f"Module is not found: {old_session.module_id}",
+                }, 400
+
+            old_module.mark_done()
+
+            if not old_module.training_lesson_id:
+                return {
+                    "mode": "error",
+                    "message": f"Training lesson is not """
+                               f"found: {old_module.training_lesson_id}",
+                }, 400
+            lesson = TrainingLessonModel.find_by_id(
+                old_module.training_lesson_id)
 
         else:
             """
@@ -84,22 +113,3 @@ class StartModule(Resource):
         )
         result["session_id"] = session.id
         return result
-
-    @staticmethod
-    def _mark_module_and_session_as_done(session_id: int):
-        """
-        Mark old module as done.
-        We don't care about error here, just return None
-        TODO: add logging about failed session id
-        """
-        session = SessionStore.get_session(session_id)
-        if not session:
-            return
-
-        if not session.module_id:
-            return
-
-        module = ModulesModel.find_by_id(session.module_id)
-        if not module:
-            return
-        module.mark_done()

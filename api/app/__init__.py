@@ -11,6 +11,7 @@ from app.resources.helloworld import HelloWorld
 from app.resources.module import Module
 from app.resources.next_exercise import NextExercise
 from app.resources.end_module import EndModule
+from app.resources.start_module import StartModule
 
 
 import app.models as app_models  # noqa: F401
@@ -104,6 +105,7 @@ def create_app(config: dict | None = None):
         NextExercise, "/modules/next-exercise"
     )
     api.add_resource(EndModule, "/modules/end-module")
+    api.add_resource(StartModule, "/modules/start-module")
 
     # ------------------------------------------------
     # Request logging
